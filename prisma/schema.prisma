@@ -1,0 +1,185 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+model Student {
+  id           Int              @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String           @unique
+  password     String
+  image        String
+  phoneNumber  String
+  teachers     TeacherStudent[]
+  certificates Certificate[]
+  courses      CourseStudent[]
+  orders       Order[]
+StudentPermission StudentPermission[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model Teacher {
+  id           Int              @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String           @unique
+  password     String
+  image        String
+  phoneNumber  String
+  students     TeacherStudent[]
+  certificates Certificate[]
+TeacherPermission TeacherPermission[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model TeacherStudent {
+  studentId Int
+  teacherId Int
+  student   Student            @relation(fields: [studentId], references: [id])
+  teacher   Teacher            @relation(fields: [teacherId], references: [id])
+
+  @@id([studentId, teacherId])
+}
+
+model Course {
+  id           Int              @id @default(autoincrement())
+  name         String
+  startDate    DateTime
+  description  String
+  certificates Certificate[]
+  students     CourseStudent[]
+  videos       Video[]
+CourseOrder CourseOrder[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model Video {
+  id           Int              @id @default(autoincrement())
+  name         String
+  src          String
+  courseId     Int
+  course       Course           @relation(fields: [courseId], references: [id])
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model CourseStudent {
+  studentId Int
+  courseId  Int
+  student   Student            @relation(fields: [studentId], references: [id])
+  course    Course             @relation(fields: [courseId], references: [id])
+
+  @@id([studentId, courseId])
+}
+
+model Certificate {
+  id           Int              @id @default(autoincrement())
+  name         String
+  issueDate    DateTime
+  studentId    Int
+  courseId     Int              @unique
+  teacherId    Int
+  student      Student          @relation(fields: [studentId], references: [id])
+  course       Course           @relation(fields: [courseId], references: [id])
+  teacher      Teacher          @relation(fields: [teacherId], references: [id])
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model Permission {
+  id           Int              @id @default(autoincrement())
+  allowed      String[]
+  admins       AdminPermission[]
+  teachers     TeacherPermission[]
+  students     StudentPermission[]
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model AdminPermission {
+  adminId      Int
+  permissionId Int
+  admin        Admin            @relation(fields: [adminId], references: [id])
+  permission   Permission       @relation(fields: [permissionId], references: [id])
+
+  @@id([adminId, permissionId])
+}
+
+model TeacherPermission {
+  teacherId    Int
+  permissionId Int
+  teacher      Teacher          @relation(fields: [teacherId], references: [id])
+  permission   Permission       @relation(fields: [permissionId], references: [id])
+
+  @@id([teacherId, permissionId])
+}
+
+model StudentPermission {
+  studentId    Int
+  permissionId Int
+  student      Student          @relation(fields: [studentId], references: [id])
+  permission   Permission       @relation(fields: [permissionId], references: [id])
+
+  @@id([studentId, permissionId])
+}
+
+model Admin {
+  id           Int              @id @default(autoincrement())
+  name         String
+  email        String           @unique
+  password     String
+  role         String
+AdminPermission AdminPermission[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model Message {
+  id           Int              @id @default(autoincrement())
+  sender       String
+  receiver     String
+  content      String
+  date         DateTime
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model Order {
+  id           Int              @id @default(autoincrement())
+  date         DateTime
+  payment      String
+  email        String
+  studentId    Int
+  student      Student          @relation(fields: [studentId], references: [id])
+  courses      CourseOrder[]
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model CourseOrder {
+  orderId      Int
+  courseId     Int
+  order        Order            @relation(fields: [orderId], references: [id])
+  course       Course           @relation(fields: [courseId], references: [id])
+
+  @@id([orderId, courseId])
+}
+
