@@ -11,6 +11,8 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["relationJoins","omitApi"]
+   
 }
 model Student {
   id           Int              @id @default(autoincrement())

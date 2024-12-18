@@ -18,7 +18,7 @@ export class AuthService {
     });
     if (existingUser)
       throw new BadRequestException('This email already exists');
-
+    console.log(student.password);
     student.password = await argon2.hash(student.password);
 
     const newUser = await this.prisma.student.create({

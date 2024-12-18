@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
+import { Controller, Post, Body, Req, Res } from '@nestjs/common';
 
 import { CreateStudentDto } from '../dto/create-student.dto';
 import { AuthService } from './auth.service';
+import { Response } from 'express';
 
 @Controller('students/auth')
 export class AuthController {
@@ -9,7 +10,8 @@ export class AuthController {
 
   @Post('/signup')
   signUp(@Body() createUserDto: CreateStudentDto) {
-    return this.authService.signUp(createUserDto);
+    return this.authService.signUp(createUserDto) as Promise<CreateStudentDto>;
+    
   }
 
   @Post('/signin')
@@ -24,24 +26,24 @@ export class AuthController {
     return user;
   }
 
-  // @Post('/signout')
-  // async signOut(@Res() res: Response) {
-  //   return res
-  //     .cookie('refCookie', '', {
-  //       maxAge: 0,
-  //       secure: true,
-  //       httpOnly: true,
-  //       signed: true,
-  //     })
-  //     .cookie('authCookie', '', {
-  //       maxAge: 0,
-  //       secure: true,
-  //       httpOnly: true,
-  //       signed: true,
-  //     })
-  //     .status(200)
-  //     .json({ message: 'Sign-out successful' });
-  // }
+  @Post('/signout')
+  async signOut(@Res() res: Response) {
+    return res
+      .cookie('refCookie', '', {
+        maxAge: 0,
+        secure: true,
+        httpOnly: true,
+        signed: true,
+      })
+      .cookie('authCookie', '', {
+        maxAge: 0,
+        secure: true,
+        httpOnly: true,
+        signed: true,
+      })
+      .status(200)
+      .json({ message: 'Sign-out successful' });
+  }
 
   // @UseGuards(RefrshGuradGuard('user'))
   // @Get('acces-token')
