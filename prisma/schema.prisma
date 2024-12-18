@@ -18,7 +18,7 @@ model Student {
   lastName     String
   email        String           @unique
   password     String
-  image        String
+  image        String?
   phoneNumber  String
   teachers     TeacherStudent[]
   certificates Certificate[]
@@ -40,6 +40,7 @@ model Teacher {
   students     TeacherStudent[]
   certificates Certificate[]
 TeacherPermission TeacherPermission[]
+course Course[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -58,10 +59,13 @@ model Course {
   name         String
   startDate    DateTime
   description  String
+  teacherId Int
   certificates Certificate[]
   students     CourseStudent[]
   videos       Video[]
 CourseOrder CourseOrder[]
+
+teacher Teacher  @relation(fields: [teacherId], references: [id])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
