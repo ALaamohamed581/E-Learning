@@ -1,0 +1,9 @@
+{
+  "admin": "Admin not found, either deleted or doesn't exist",
+  "menuItem": "The menu item doesn't exist",
+  "cart": "Please create a cart",
+  "password": "Wrong password, please enter the correct one",
+  "emailNotFound": "This email doesn't exist",
+  "emailPassword": "Wrong email or password",
+  "duplicateEmail": "This email already exists"
+}
