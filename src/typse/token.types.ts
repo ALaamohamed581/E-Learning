@@ -1,5 +1,3 @@
-import { Teacher } from 'src/modules/teacher/entities/teacher.entity';
-import { Student } from './../../node_modules/.prisma/client/index.d';
 import { CreateStudentDto } from 'src/modules/student/dto/create-student.dto';
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 

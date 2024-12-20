@@ -7,7 +7,6 @@ import {
 import { PrismaService } from 'src/prisma.service';
 import * as argon2 from 'argon2';
 import { AuthData } from 'src/typse/token.types';
-import { Student, Teacher, Prisma } from '@prisma/client';
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { CreateStudentDto } from '../dto/create-student.dto';
 

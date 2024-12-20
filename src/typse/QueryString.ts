@@ -1,5 +1,4 @@
 export type QueryString = {
-  fields: string;
   page?: number;
   limit: number;
   skip: number;

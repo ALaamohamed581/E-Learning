@@ -7,4 +7,4 @@ import { PrismaService } from 'src/prisma.service';
   controllers: [AuthController],
   providers: [AuthService, PrismaService],
 })
-export class StudentAuthModule {}
+export class AuthModule {}

@@ -9,6 +9,7 @@ export class CreateStudentDto {
   lastName: string;
 
   @IsEmail()
+  @IsString()
   email: string;
 
   @IsString()

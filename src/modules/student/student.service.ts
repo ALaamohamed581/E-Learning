@@ -1,20 +1,45 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/prisma.service';
+import * as argon2 from 'argon2';
+import { UpdatePasswordDto } from 'src/common/dtos/updatePassword.dto';
+import { QueryString } from 'src/typse/QueryString';
+import { paginatedData } from '../../typse/QueryString';
+import { promises } from 'dns';
 
 @Injectable()
 export class StudentService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.student.findMany({
+  async findAll({
+    limit,
+    queryStr,
+    skip,
+    page,
+    sort,
+  }: QueryString): Promise<paginatedData> {
+    const total = await this.prisma.student.count({ where: queryStr });
+    const numberOfPages = Math.ceil(total / limit);
+    const students = await this.prisma.student.findMany({
       omit: {
         password: true,
       },
       include: { teachers: true },
-      take: 5,
+      take: limit,
+      orderBy: sort,
+      skip,
+      where: queryStr,
     });
+
+    return {
+      data: students,
+      numberOfPages,
+      page,
+    };
   }
 
   findOne(id: number) {
@@ -27,24 +52,35 @@ export class StudentService {
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
-    const tracher = await this.prisma.teacher.findFirst({ where: { id: 1 } });
     const student = await this.prisma.student.findFirst({ where: { id } });
     if (!student) throw new BadRequestException('This student dosent exsits');
     return this.prisma.student.update({
+      omit: {
+        password: true,
+      },
       where: {
         id,
       },
       include: { teachers: true },
-      data: {
-        email: updateStudentDto.email,
-        image: updateStudentDto.image,
-        firstName: updateStudentDto.firstName,
-        lastName: updateStudentDto.lastName,
-        phoneNumber: updateStudentDto.phoneNumber,
-        teachers: {
-          connect: { studentId_teacherId: { teacherId: 1, studentId: id } },
-        },
-      },
+      data: updateStudentDto,
+    });
+  }
+
+  async resetPassword(id: number, passwordsData: Partial<UpdatePasswordDto>) {
+    const { Oldpassword, newPassword } = passwordsData;
+
+    const exsitingUser = await this.prisma.student.findFirst({ where: { id } });
+    if (!exsitingUser) {
+      return new NotFoundException('user not found');
+    }
+    if (!argon2.verify(exsitingUser.password, Oldpassword))
+      return new BadRequestException(
+        'wrong password please enter the coorect one',
+      );
+    exsitingUser.password = await argon2.hash(newPassword);
+    await this.prisma.student.update({
+      where: { id },
+      data: { password: exsitingUser.password },
     });
   }
 }

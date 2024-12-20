@@ -1,23 +1,57 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { QueryString } from 'src/typse/QueryString';
+import { PrismaService } from '../../prisma.service';
 
 @Injectable()
 export class TeacherService {
-  create(createTeacherDto: CreateTeacherDto) {
-    return 'This action adds a new teacher';
-  }
+  constructor(private readonly prisma: PrismaService) {}
+  async findAll({ limit, queryStr, skip, page, sort }: QueryString) {
+    const total = await this.prisma.teacher.count({ where: queryStr });
+    const numberOfPages = Math.ceil(total / limit);
 
-  findAll() {
-    return `This action returns all teacher`;
+    const teachers = await this.prisma.teacher.findMany({
+      omit: {
+        password: true,
+      },
+      take: limit,
+      skip: skip,
+      where: queryStr,
+
+      orderBy: sort,
+    });
+    return {
+      data: teachers,
+      numberOfPages,
+      page,
+    };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} teacher`;
+    const teacher = this.prisma.teacher.findFirst({
+      where: { id },
+      omit: {
+        password: true,
+      },
+      include: { students: true, course: true, TeacherPermission: true },
+    });
+    if (!teacher) throw new Error('Teacher not found');
+    return teacher;
   }
 
   update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    return `This action updates a #${id} teacher`;
+    const teacher = this.prisma.teacher.findFirst({ where: { id } });
+    if (!teacher) throw new Error('Teacher not found');
+    return this.prisma.teacher.update({
+      omit: {
+        password: true,
+      },
+      where: {
+        id,
+      },
+      data: updateTeacherDto,
+    });
   }
 
   remove(id: number) {

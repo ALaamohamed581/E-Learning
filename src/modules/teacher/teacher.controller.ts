@@ -1,20 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
+import { QueryString } from 'src/typse/QueryString';
 
 @Controller('teacher')
 export class TeacherController {
   constructor(private readonly teacherService: TeacherService) {}
 
   @Post()
-  create(@Body() createTeacherDto: CreateTeacherDto) {
-    return this.teacherService.create(createTeacherDto);
-  }
-
   @Get()
-  findAll() {
-    return this.teacherService.findAll();
+  findAll(
+    @Query(new PaginationPipe())
+    { limit, queryStr, skip, page, sort }: QueryString,
+  ) {
+    return this.teacherService.findAll({ limit, queryStr, skip, page, sort });
   }
 
   @Get(':id')

@@ -23,13 +23,12 @@ export const AuthGuard = (role = 'student'): any => {
     async canActivate(context: ExecutionContext): Promise<boolean> {
       let secret: string;
       const request = context.switchToHttp().getRequest();
-      const { entity } = request.params;
       const { authCookie: token } = request.cookies;
 
-      if (entity === 'teacher') {
+      if (role === 'teacher') {
         secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
       }
-      if (entity === 'student') {
+      if (role === 'student') {
         secret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
       }
 

@@ -115,10 +115,10 @@ export class AuthController {
   @Get('acces-token')
   async getAccessToken(
     @Req() request: Request,
-    @Res() res: Response,
+
     @Param('entity') entity: 'student' | 'teacher',
   ) {
     const { userId } = request;
-    res.send(this.authService.getAuyhToken(userId, entity));
+    return this.authService.getAuyhToken(userId, entity);
   }
 }
