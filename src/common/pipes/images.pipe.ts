@@ -15,7 +15,7 @@ export class VideoPipe implements PipeTransform {
     });
 
     const files = Array.isArray(value) ? value : [value];
-
+    console.log(files);
     const imageUrls = await Promise.all(
       files.map(async (file) => {
         const imageBuffer = file.buffer.slice(0, 8);
