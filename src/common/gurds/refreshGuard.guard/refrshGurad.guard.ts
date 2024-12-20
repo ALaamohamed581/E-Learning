@@ -17,7 +17,7 @@ export const RefrshGuradGuard = (role: string): any => {
       const request = context.switchToHttp().getRequest();
       const { refCookie: refTokne } = request.cookies;
       const { entity } = request.params;
-      console.log(entity);
+
       if (entity === 'teacher') {
         secret = process.env.TEACHER_REFRESH_TOKEN_SECRET as string;
       } else if (entity === 'student') {

@@ -19,6 +19,7 @@ import { SignIn } from 'src/common/Interceptores/signinInterceptor/signin.intecp
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { RefrshGuradGuard } from 'src/common/gurds/refreshGuard.guard/refrshGurad.guard';
 import { ApiCookieAuth } from '@nestjs/swagger';
+import { AccessRokenInterceptor } from 'src/common/Interceptores/access-roken/access-roken.interceptor';
 
 //
 @Controller(':entity/auth')
@@ -112,6 +113,7 @@ export class AuthController {
   }
 
   @UseGuards(RefrshGuradGuard('user'))
+  @UseInterceptors(AccessRokenInterceptor)
   @Get('acces-token')
   async getAccessToken(
     @Req() request: Request,
