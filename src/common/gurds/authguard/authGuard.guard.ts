@@ -38,7 +38,7 @@ export const AuthGuard = (role = 'student'): any => {
       try {
         const decoded = this.JWTAuthService.VerifyAuthToken({ token, secret });
 
-        request.payload = decoded.payload;
+        request.userId = decoded.payload.id;
 
         return true;
       } catch (error) {

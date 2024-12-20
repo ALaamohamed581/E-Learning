@@ -59,9 +59,13 @@ model TeacherStudent {
 model Course {
   id           Int              @id @default(autoincrement())
   name         String
-  startDate    DateTime
+  startDate    DateTime? 
   description  String
   teacherId Int
+  price Int
+  duration Int
+    level        String
+    category     String
   certificates Certificate[]
   students     CourseStudent[]
   videos       Video[]

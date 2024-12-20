@@ -7,18 +7,29 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
 import { QueryString } from 'src/typse/QueryString';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { VideoPipe } from 'src/common/pipes/images.pipe';
+import { CreateVideoDto } from '../video/dto/create-video.dto';
+import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
+import { Request } from 'express';
+import { VideoService } from '../video/video.service';
 
-@Controller('teacher')
+@Controller('teachers')
 export class TeacherController {
-  constructor(private readonly teacherService: TeacherService) {}
+  constructor(
+    private readonly teacherService: TeacherService,
+    private readonly VideoService: VideoService,
+  ) {}
 
-  @Post()
   @Get()
   findAll(
     @Query(new PaginationPipe())
@@ -35,6 +46,19 @@ export class TeacherController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
     return this.teacherService.update(+id, updateTeacherDto);
+  }
+  @Patch(':courseid/courses')
+  @UseInterceptors(FileInterceptor('video'))
+  @UseGuards(AuthGuard('teacher'))
+  uploadVideo(
+    @Param('courseid') courseId: number,
+    @Body() CreateVideoDto: CreateVideoDto,
+    @UploadedFile(new VideoPipe()) videoUrl: string,
+    @Req() req: Request,
+  ) {
+    [CreateVideoDto.src] = videoUrl;
+    console.log(CreateVideoDto);
+    return this.teacherService.uploadVideo(1, CreateVideoDto, courseId);
   }
 
   @Delete(':id')

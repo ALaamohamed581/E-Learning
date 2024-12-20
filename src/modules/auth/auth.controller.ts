@@ -12,7 +12,7 @@ import {
 
 import { URLSearchParams } from 'url';
 import axios from 'axios';
-import { CreateStudentDto } from '../dto/create-student.dto';
+import { CreateStudentDto } from '../student/dto/create-student.dto';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { SignIn } from 'src/common/Interceptores/signinInterceptor/signin.intecptor';
@@ -119,6 +119,7 @@ export class AuthController {
     @Param('entity') entity: 'student' | 'teacher',
   ) {
     const { userId } = request;
-    return this.authService.getAuyhToken(userId, entity);
+    request.payload = this.authService.getAuyhToken(userId, entity) as any;
+    return 'succes';
   }
 }

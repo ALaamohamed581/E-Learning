@@ -3,6 +3,8 @@ import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { QueryString } from 'src/typse/QueryString';
 import { PrismaService } from '../../prisma.service';
+import { CreateVideoDto } from '../video/dto/create-video.dto';
+import { create } from 'domain';
 
 @Injectable()
 export class TeacherService {
@@ -51,6 +53,24 @@ export class TeacherService {
         id,
       },
       data: updateTeacherDto,
+    });
+  }
+  uploadVideo(id: number, video: CreateVideoDto, courseid: number) {
+    return this.prisma.teacher.update({
+      where: { id },
+
+      data: {
+        course: {
+          update: {
+            where: { teacherId: id, id: courseid },
+            data: {
+              videos: {
+                create: video,
+              },
+            },
+          },
+        },
+      },
     });
   }
 

@@ -8,7 +8,7 @@ import { PrismaService } from 'src/prisma.service';
 import * as argon2 from 'argon2';
 import { AuthData } from 'src/typse/token.types';
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
-import { CreateStudentDto } from '../dto/create-student.dto';
+import { CreateStudentDto } from '../student/dto/create-student.dto';
 
 @Injectable()
 export class AuthService {
@@ -61,6 +61,6 @@ export class AuthService {
       return new NotFoundException('user has been deleted or dose not exsits');
     }
 
-    return;
+    return existingUser;
   }
 }
