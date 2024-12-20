@@ -82,7 +82,7 @@ model Video {
   src          String
   courseId     Int
   course       Course           @relation(fields: [courseId], references: [id])
-
+order Int  @default(autoincrement())
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
