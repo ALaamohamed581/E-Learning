@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/modules/global/prisma.service';
 
 @Injectable()
 export class VideoService {
@@ -12,6 +12,7 @@ export class VideoService {
         name: createVideoDto.name,
         src: createVideoDto.src,
         courseId: createVideoDto.courseId as number,
+        watched: false,
       },
     });
   }

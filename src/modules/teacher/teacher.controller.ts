@@ -47,7 +47,7 @@ export class TeacherController {
   update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
     return this.teacherService.update(+id, updateTeacherDto);
   }
-  @Patch(':courseid/courses')
+  @Post(':courseid/courses')
   @UseInterceptors(FileInterceptor('video'))
   @UseGuards(AuthGuard('teacher'))
   uploadVideo(
@@ -58,9 +58,28 @@ export class TeacherController {
   ) {
     [CreateVideoDto.src] = videoUrl;
     console.log(CreateVideoDto);
-    return this.teacherService.uploadVideo(1, CreateVideoDto, courseId);
+    return this.teacherService.uploadVideo(1, courseId, CreateVideoDto);
   }
+  @Patch(':courseid/courses')
+  @UseInterceptors(FileInterceptor('video'))
+  @UseGuards(AuthGuard('teacher'))
+  uploadVideodirectly(
+    @Param('courseid') courseId: number,
+    @Body() CreateVideoDto: CreateVideoDto,
+    @UploadedFile(new VideoPipe()) videoUrl: string,
+    @Body() body: any,
+  ) {
+    [CreateVideoDto.src] = videoUrl;
+    CreateVideoDto.courseId = courseId;
+    const { index } = body;
 
+    return this.teacherService.uploadVideodirectly(
+      1,
+      courseId,
+      CreateVideoDto,
+      +index,
+    );
+  }
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.teacherService.remove(+id);

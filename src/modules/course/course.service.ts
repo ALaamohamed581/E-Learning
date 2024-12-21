@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/modules/global/prisma.service';
 import { QueryString } from 'src/typse/QueryString';
 
 @Injectable()

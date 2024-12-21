@@ -22,11 +22,11 @@ model Student {
   password     String
   image        String?
   phoneNumber  String
-  teachers     TeacherStudent[]
+  teachers     Teacher[]
   certificates Certificate[]
-  courses      CourseStudent[]
+  courses           Course[]
   orders       Order[]
-StudentPermission StudentPermission[]
+StudentPermission Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -39,22 +39,15 @@ model Teacher {
   password     String
   image        String
   phoneNumber  String
-  students     TeacherStudent[]
+  students     Student[]
   certificates Certificate[]
-TeacherPermission TeacherPermission[]
+permissions Permission[]
 course Course[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
 
-model TeacherStudent {
-  studentId Int
-  teacherId Int
-  student   Student            @relation(fields: [studentId], references: [id])
-  teacher   Teacher            @relation(fields: [teacherId], references: [id])
 
-  @@id([studentId, teacherId])
-}
 
 model Course {
   id           Int              @id @default(autoincrement())
@@ -67,9 +60,9 @@ model Course {
     level        String
     category     String
   certificates Certificate[]
-  students     CourseStudent[]
+students     Student[]
   videos       Video[]
-CourseOrder CourseOrder[]
+orders Order[]
 
 teacher Teacher  @relation(fields: [teacherId], references: [id])
   createdAt    DateTime         @default(now())
@@ -82,18 +75,19 @@ model Video {
   src          String
   courseId     Int
   course       Course           @relation(fields: [courseId], references: [id])
-
+  order Int @default(autoincrement())
+watched Boolean
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
 
-model CourseStudent {
+model VideWtached{
   studentId Int
-  courseId  Int
-  student   Student            @relation(fields: [studentId], references: [id])
-  course    Course             @relation(fields: [courseId], references: [id])
+  VideoId Int
+  courseId Int
+  wtached Boolean? @default(false)
+  @@id([studentId,VideoId,courseId])
 
-  @@id([studentId, courseId])
 }
 
 model Certificate {
@@ -114,40 +108,19 @@ model Certificate {
 model Permission {
   id           Int              @id @default(autoincrement())
   allowed      String[]
-  admins       AdminPermission[]
-  teachers     TeacherPermission[]
-  students     StudentPermission[]
+  admins       Admin[]
+  teachers     Teacher[]
+  students     Student[]
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
 
-model AdminPermission {
-  adminId      Int
-  permissionId Int
-  admin        Admin            @relation(fields: [adminId], references: [id])
-  permission   Permission       @relation(fields: [permissionId], references: [id])
 
-  @@id([adminId, permissionId])
-}
 
-model TeacherPermission {
-  teacherId    Int
-  permissionId Int
-  teacher      Teacher          @relation(fields: [teacherId], references: [id])
-  permission   Permission       @relation(fields: [permissionId], references: [id])
 
-  @@id([teacherId, permissionId])
-}
 
-model StudentPermission {
-  studentId    Int
-  permissionId Int
-  student      Student          @relation(fields: [studentId], references: [id])
-  permission   Permission       @relation(fields: [permissionId], references: [id])
 
-  @@id([studentId, permissionId])
-}
 
 model Admin {
   id           Int              @id @default(autoincrement())
@@ -155,7 +128,7 @@ model Admin {
   email        String           @unique
   password     String
   role         String
-AdminPermission AdminPermission[]
+permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -178,18 +151,11 @@ model Order {
   email        String
   studentId    Int
   student      Student          @relation(fields: [studentId], references: [id])
-  courses      CourseOrder[]
+  courses      Course[]
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
 
-model CourseOrder {
-  orderId      Int
-  courseId     Int
-  order        Order            @relation(fields: [orderId], references: [id])
-  course       Course           @relation(fields: [courseId], references: [id])
 
-  @@id([orderId, courseId])
-}
 

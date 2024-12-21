@@ -4,7 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/modules/global/prisma.service';
 import * as argon2 from 'argon2';
 import { AuthData } from 'src/typse/token.types';
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
@@ -20,7 +20,7 @@ export class AuthService {
     })) as CreateTeacherDto | CreateStudentDto;
     if (existingUser)
       throw new BadRequestException('This email already exists');
-    console.log(model.password);
+
     model.password = await argon2.hash(model.password);
 
     const newUser = (await (this.prisma[entity] as any).create({

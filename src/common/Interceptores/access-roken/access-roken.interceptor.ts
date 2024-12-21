@@ -26,11 +26,14 @@ export class AccessRokenInterceptor implements NestInterceptor {
         const [authToken] = this.jwt.generateTokens([
           { expiresIn: '15m', payload: req.payload, secret: secret },
         ]);
-        return res.cookie('authCookie', authToken, {
-          maxAge: 1000 * 60 * 15, // 15 minutes
-          secure: true,
-          httpOnly: true,
-        });
+        return res
+          .cookie('authCookie', authToken, {
+            maxAge: 1000 * 60 * 15, // 15 minutes
+            secure: true,
+            httpOnly: true,
+          })
+          .status(200)
+          .json({ message: 'access-token accquired' });
       }),
     );
   }

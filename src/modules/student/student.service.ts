@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/modules/global/prisma.service';
 import * as argon2 from 'argon2';
 import { UpdatePasswordDto } from 'src/common/dtos/updatePassword.dto';
 import { QueryString } from 'src/typse/QueryString';
@@ -47,6 +47,7 @@ export class StudentService {
       omit: {
         password: true,
       },
+      include: { courses: true },
       where: { id },
     });
   }
@@ -64,6 +65,33 @@ export class StudentService {
       include: { teachers: true },
       data: updateStudentDto,
     });
+  }
+
+  async addCourse(id: number, courseId: number) {
+    const course = await this.prisma.course.findFirst({
+      where: { id: courseId },
+      include: { videos: true },
+    });
+
+    if (!course) throw new BadRequestException('This course does not exist');
+
+    const data = this.prisma.student.update({
+      where: { id },
+      data: {
+        courses: { connect: { id: courseId } },
+      },
+    });
+    await this.prisma.videWtached.createMany({
+      data: await Promise.all(
+        course.videos.map((vid) => ({
+          studentId: id,
+          courseId: courseId,
+          VideoId: vid.id,
+        })),
+      ),
+    });
+
+    return data;
   }
 
   async resetPassword(id: number, passwordsData: Partial<UpdatePasswordDto>) {
