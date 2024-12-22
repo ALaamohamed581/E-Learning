@@ -9,6 +9,7 @@ import { UtlisModule } from './modules/utlis/utlis.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CourseModule } from './modules/course/course.module';
 import { VideoModule } from './modules/video/video.module';
+import { CertificateModule } from './modules/certificate/certificate.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { VideoModule } from './modules/video/video.module';
     TeacherModule,
     CourseModule,
     VideoModule,
+    CertificateModule,
   ],
   controllers: [AppController],
   providers: [AppService],

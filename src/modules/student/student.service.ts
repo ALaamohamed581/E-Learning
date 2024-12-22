@@ -67,33 +67,6 @@ export class StudentService {
     });
   }
 
-  async addCourse(id: number, courseId: number) {
-    const course = await this.prisma.course.findFirst({
-      where: { id: courseId },
-      include: { videos: true },
-    });
-
-    if (!course) throw new BadRequestException('This course does not exist');
-
-    const data = this.prisma.student.update({
-      where: { id },
-      data: {
-        courses: { connect: { id: courseId } },
-      },
-    });
-    await this.prisma.videWtached.createMany({
-      data: await Promise.all(
-        course.videos.map((vid) => ({
-          studentId: id,
-          courseId: courseId,
-          VideoId: vid.id,
-        })),
-      ),
-    });
-
-    return data;
-  }
-
   async resetPassword(id: number, passwordsData: Partial<UpdatePasswordDto>) {
     const { Oldpassword, newPassword } = passwordsData;
 

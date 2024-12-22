@@ -57,7 +57,7 @@ export class TeacherController {
     @Req() req: Request,
   ) {
     [CreateVideoDto.src] = videoUrl;
-    console.log(CreateVideoDto);
+
     return this.teacherService.uploadVideo(1, courseId, CreateVideoDto);
   }
   @Patch(':courseid/courses')

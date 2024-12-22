@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('certificate')
+  @Render('certificate')
+  getCertificate() {
+    return {
+      firstName: 'alaa',
+      couseId: '123',
+      studenId: '4000',
+      duration: 5,
+      earnedAt: 25 - 5 - 5252,
+    };
   }
 }

@@ -14,10 +14,14 @@ import { FilterPipe } from 'src/common/pipes/filterPipe';
 import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
 import { QueryString } from 'src/typse/QueryString';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
+import { CourseVideos } from './studentVideos.service';
 
 @Controller('students')
 export class StudentController {
-  constructor(private readonly studentService: StudentService) {}
+  constructor(
+    private readonly studentService: StudentService,
+    private readonly vids: CourseVideos,
+  ) {}
   @Get()
   findAll(
     @Query(new PaginationPipe())
@@ -28,7 +32,7 @@ export class StudentController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    this.studentService.addCourse(1, 1);
+    this.vids.isCoursCompeleted({ cousreId: 1, studentId: 1 });
     return this.studentService.findOne(+id);
   }
   @Patch('reset-password/:id')

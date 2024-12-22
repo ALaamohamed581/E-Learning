@@ -56,7 +56,9 @@ model Course {
   description  String
   teacherId Int
   price Int
-  duration Int
+  duration Float
+  
+
     level        String
     category     String
   certificates Certificate[]
@@ -74,6 +76,7 @@ model Video {
   name         String
   src          String
   courseId     Int
+  duration Float
   course       Course           @relation(fields: [courseId], references: [id])
   order Int @default(autoincrement())
 watched Boolean

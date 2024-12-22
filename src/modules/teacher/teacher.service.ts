@@ -31,7 +31,6 @@ export class TeacherService {
   }
 
   async findOne(id: number) {
-    console.log(await this.prisma.videWtached.findMany());
     const teacher = this.prisma.teacher.findFirst({
       where: { id },
       omit: {

@@ -32,7 +32,9 @@ export class VideoPipe implements PipeTransform {
 
           const img = await cloudinary.uploader.upload(dataUrl, {
             resource_type: 'video',
+            media_metadata: true,
           });
+          console.log(img.duration);
           return img.url;
         }
 
