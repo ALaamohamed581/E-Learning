@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../global/prisma.service';
-import { i } from 'vite/dist/node/types.d-aGj9QkWt';
 @Injectable()
-export class CourseVideos {
+export class VideoStatus {
   constructor(private readonly prisma: PrismaService) {}
 
   async addVideos({ courseId, userId, videos }) {

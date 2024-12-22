@@ -10,6 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CourseModule } from './modules/course/course.module';
 import { VideoModule } from './modules/video/video.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
+import { VideoStatusModule } from './modules/videoStatus/vvideoStatus.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CertificateModule } from './modules/certificate/certificate.module';
     CourseModule,
     VideoModule,
     CertificateModule,
+    VideoStatusModule,
   ],
   controllers: [AppController],
   providers: [AppService],

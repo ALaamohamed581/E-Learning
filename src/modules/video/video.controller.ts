@@ -8,26 +8,20 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
 import { VideoPipe } from 'src/common/pipes/images.pipe';
+import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
+import { Request } from 'express';
 
 @Controller('videos')
 export class VideoController {
   constructor(private readonly videoService: VideoService) {}
-
-  @Post()
-  @UseInterceptors(FileInterceptor('videos'))
-  upload(
-    @UploadedFile(new VideoPipe()) videoUrl: string,
-    @Body() createVideoDto: CreateVideoDto,
-  ) {
-    [createVideoDto.src] = videoUrl;
-    return this.videoService.upload(createVideoDto);
-  }
 
   @Get()
   findAll() {
@@ -43,9 +37,14 @@ export class VideoController {
   update(@Param('id') id: string, @Body() updateVideoDto: UpdateVideoDto) {
     return this.videoService.update(+id, updateVideoDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.videoService.remove(+id);
+  @UseGuards(AuthGuard('teacher'))
+  @Delete(':id/courses/:course-id')
+  remove(
+    @Param('id') videoId: number,
+    @Req() req: Request,
+    @Param('course-id') courseId: number,
+  ) {
+    const teacherId = req.userId as number;
+    return this.videoService.remove({ videoId, teacherId, courseId });
   }
 }

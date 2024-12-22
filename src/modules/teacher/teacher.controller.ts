@@ -58,7 +58,7 @@ export class TeacherController {
   ) {
     [CreateVideoDto.src] = videoUrl;
 
-    return this.teacherService.uploadVideo(1, courseId, CreateVideoDto);
+    return this.VideoService.uploadVideo(1, courseId, CreateVideoDto);
   }
   @Patch(':courseid/courses')
   @UseInterceptors(FileInterceptor('video'))
@@ -73,7 +73,7 @@ export class TeacherController {
     CreateVideoDto.courseId = courseId;
     const { index } = body;
 
-    return this.teacherService.uploadVideodirectly(
+    return this.VideoService.uploadVideodirectly(
       1,
       courseId,
       CreateVideoDto,

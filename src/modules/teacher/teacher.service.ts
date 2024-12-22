@@ -3,8 +3,6 @@ import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { QueryString } from 'src/typse/QueryString';
 import { PrismaService } from '../global/prisma.service';
-import { CreateVideoDto } from '../video/dto/create-video.dto';
-import { create } from 'domain';
 
 @Injectable()
 export class TeacherService {
@@ -54,59 +52,6 @@ export class TeacherService {
       },
       data: updateTeacherDto,
     });
-  }
-  async uploadVideo(id: number, courseid: number, video: CreateVideoDto) {
-    const course = await this.prisma.course.findFirst({
-      where: { id: courseid, teacherId: 1 },
-      include: { videos: true },
-    });
-    if (!course) throw new NotFoundException('Course not found');
-    return this.prisma.course.update({
-      where: { id: courseid },
-      include: { videos: true },
-      data: {
-        videos: {
-          create: {
-            src: video.src,
-            name: video.name,
-            order: course.videos.length,
-            watched: false,
-          },
-        },
-      },
-    });
-  }
-  async uploadVideodirectly(
-    id: number,
-    courseid: number,
-    video: CreateVideoDto,
-    index: number,
-  ) {
-    try {
-      const course = await this.prisma.course.findFirst({
-        where: { id: courseid, teacherId: id },
-        include: { videos: true },
-      });
-
-      if (!course) throw new Error('Course not found');
-      await this.prisma.video.create({
-        data: { ...video, courseId: courseid, order: index, watched: false },
-      });
-      // Update the order of existing videos
-      return await Promise.all(
-        course.videos.map(async (v, i) => {
-          if (i >= index) {
-            await this.prisma.video.update({
-              where: { id: v.id },
-              data: { order: i + 1 },
-            });
-          }
-        }),
-      );
-    } catch (e) {
-      console.log(e.message);
-      throw new Error(`Failed to upload video: ${e.message}`);
-    }
   }
 
   remove(id: number) {
