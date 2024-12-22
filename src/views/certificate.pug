@@ -41,21 +41,38 @@ html(lang="en")
         background: linear-gradient(135deg, #add8e6, #87cefa);
         clip-path: ellipse(80% 50% at 50% 0%);
       }
+      .certificate::after {
+        content: "Alaa's Apps";
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 120px;
+        color: rgba(0, 0, 0, 0.05); /* Transparent black */
+        font-weight: bold;
+        letter-spacing: 5px;
+        white-space: nowrap;
+        z-index: 0; /* Behind all other content */
+        pointer-events: none;
+      }
       .certificate h1 {
         font-size: 26px;
         margin-bottom: 15px;
         text-transform: uppercase;
         color: #333;
+        z-index: 1;
       }
       .certificate p {
         font-size: 18px;
         margin: 10px 0;
         color: #555;
+        z-index: 1;
       }
       .certificate p.bold {
         font-weight: bold;
         font-size: 20px;
         color: #4682b4; /* Deep blue */
+        z-index: 1;
       }
       .certificate .signature {
         margin-top: 30px;
@@ -63,14 +80,15 @@ html(lang="en")
         font-style: italic;
         color: #555;
         width: 100%;
+        z-index: 1;
       }
       svg.barcode {
         margin-top: 20px;
         margin-bottom: 10px; /* Extra space below barcode */
-      
         padding: 10px; /* Padding around the barcode */
         border-radius: 8px; /* Smooth edges for aesthetics */
         background-color: #fff; /* White background for contrast */
+        z-index: 1;
       }
   body
     .certificate
@@ -78,21 +96,22 @@ html(lang="en")
       p This certifies that
       p.bold #{firstName}
       p has successfully completed the course
-      p.bold #{couseId}
-      p.bold #{duration}
+      p.bold #{courseName}
+      p.bold #{courseDuration}
       p.bold #{earnedAt}
       svg#barcode.barcode
-      .signature
-        p Authorized Signature
+      .signature Signature
     script.
       // Generate the barcode with improved styling
-      const barcodeValue = `${'#{firstName}'}-${'#{couseId}'}-${'#{studenId}'}`;
+      const firstName = "Alaa";
+      const courseId = "1234";
+      const studentId = "5678";
+      const barcodeValue = `${firstName}-${courseId}-${studentId}`;
       JsBarcode("#barcode", barcodeValue, {
         format: "CODE128",
         fontSize: 16, 
         textMargin: 12,  
         fontOptions: "bold", 
-     
         margin: 15, 
         height: 100, 
         width: 2.5 

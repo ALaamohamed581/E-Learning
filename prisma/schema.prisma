@@ -23,7 +23,7 @@ model Student {
   image        String?
   phoneNumber  String
   teachers     Teacher[]
-  certificates Certificate[]
+certificate Certificate?
   courses           Course[]
   orders       Order[]
 StudentPermission Permission[]
@@ -40,7 +40,6 @@ model Teacher {
   image        String
   phoneNumber  String
   students     Student[]
-  certificates Certificate[]
 permissions Permission[]
 course Course[]
   createdAt    DateTime         @default(now())
@@ -57,11 +56,11 @@ model Course {
   teacherId Int
   price Int
   duration Float
-  
+  certificate Certificate?
 
     level        String
     category     String
-  certificates Certificate[]
+    certificatesid Int?
 students     Student[]
   videos       Video[]
 orders Order[]
@@ -76,7 +75,7 @@ model Video {
   name         String
   src          String
   courseId     Int
-  duration Float
+  duration Float @default(0)
   course       Course           @relation(fields: [courseId], references: [id])
   order Int @default(autoincrement())
 watched Boolean
@@ -95,18 +94,23 @@ model VideWtached{
 
 model Certificate {
   id           Int              @id @default(autoincrement())
-  name         String
-  issueDate    DateTime
-  studentId    Int
+
+  studentId    Int        @unique 
   courseId     Int              @unique
-  teacherId    Int
-  student      Student          @relation(fields: [studentId], references: [id])
-  course       Course           @relation(fields: [courseId], references: [id])
-  teacher      Teacher          @relation(fields: [teacherId], references: [id])
+ 
+  student   Student @relation(fields: [studentId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id])
+firstName String
+lastName String 
+
+courseName String
+
+CourseDuration Int
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
-}
+
+  }
 
 model Permission {
   id           Int              @id @default(autoincrement())

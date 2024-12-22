@@ -1,26 +1,80 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCertificateDto } from './dto/create-certificate.dto';
-import { UpdateCertificateDto } from './dto/update-certificate.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { VideoStatus } from '../videos/videoStatus/videoStatus.service';
+import { PrismaService } from '../global/prisma.service';
 
 @Injectable()
 export class CertificateService {
-  create(createCertificateDto: CreateCertificateDto) {
-    return 'This action adds a new certificate';
+  constructor(
+    private readonly videoStatus: VideoStatus,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  async create({ courseId, studentId }) {
+    const isCourseCompleted = await this.videoStatus.isCoursCompeleted({
+      cousreId: courseId,
+      studentId,
+    });
+    if (!isCourseCompleted) {
+      throw new BadRequestException('Course is not completed');
+    }
+
+    const student = await this.prisma.student.findFirst({
+      where: { id: studentId },
+      select: {
+        firstName: true,
+        lastName: true,
+        courses: {
+          where: { id: courseId },
+          select: { name: true, duration: true },
+        },
+      },
+    });
+
+    if (!student || !student.courses.length) {
+      throw new NotFoundException('Student or course not found');
+    }
+
+    const { duration, name: courseName } = student.courses[0];
+    const certificate = await this.prisma.certificate.create({
+      data: {
+        courseName,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        CourseDuration: duration,
+        student: { connect: { id: studentId } },
+        course: { connect: { id: courseId } },
+      },
+    });
+
+    return {
+      firstName: student.firstName,
+      courseId,
+      studentId,
+      CourseDuration: certificate.CourseDuration,
+      earnedAt: certificate.createdAt,
+    };
   }
 
-  findAll() {
-    return `This action returns all certificate`;
-  }
+  async findOne(id: number) {
+    const certificate = await this.prisma.certificate.findFirst({
+      where: { id },
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} certificate`;
-  }
+    if (!certificate) {
+      throw new NotFoundException('Certificate not found');
+    }
 
-  update(id: number, updateCertificateDto: UpdateCertificateDto) {
-    return `This action updates a #${id} certificate`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} certificate`;
+    return {
+      firstName: certificate.firstName,
+      courseId: certificate.courseId,
+      courseName: certificate.courseName,
+      studentId: certificate.studentId,
+      CourseDuration: certificate.CourseDuration,
+      earnedAt: certificate.createdAt,
+    };
   }
 }

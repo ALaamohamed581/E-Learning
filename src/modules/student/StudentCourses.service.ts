@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../global/prisma.service';
-import { VideoStatus } from '../videoStatus/videoStatus.service';
+import { VideoStatus } from '../videos/videoStatus/videoStatus.service';
 
 @Injectable()
 export class StudenCourses {

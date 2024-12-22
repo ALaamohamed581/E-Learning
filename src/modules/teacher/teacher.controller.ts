@@ -22,6 +22,7 @@ import { CreateVideoDto } from '../video/dto/create-video.dto';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { Request } from 'express';
 import { VideoService } from '../video/video.service';
+import { createReadStream } from 'fs';
 
 @Controller('teachers')
 export class TeacherController {

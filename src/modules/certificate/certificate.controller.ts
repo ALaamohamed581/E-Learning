@@ -1,34 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  Render,
+} from '@nestjs/common';
 import { CertificateService } from './certificate.service';
-import { CreateCertificateDto } from './dto/create-certificate.dto';
-import { UpdateCertificateDto } from './dto/update-certificate.dto';
+
+import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
+import { Request } from 'express';
 
 @Controller('certificate')
 export class CertificateController {
   constructor(private readonly certificateService: CertificateService) {}
 
-  @Post()
-  create(@Body() createCertificateDto: CreateCertificateDto) {
-    return this.certificateService.create(createCertificateDto);
-  }
+  @Post('courses/:courseId')
+  @Render('certificate')
+  @UseGuards(AuthGuard('student'))
+  create(@Req() req: Request, @Param('courseId') courseId: number) {
+    const studentId = req.userId;
 
-  @Get()
-  findAll() {
-    return this.certificateService.findAll();
+    return this.certificateService.create({ courseId, studentId });
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('student'))
+  @Render('certificate')
   findOne(@Param('id') id: string) {
     return this.certificateService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCertificateDto: UpdateCertificateDto) {
-    return this.certificateService.update(+id, updateCertificateDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.certificateService.remove(+id);
   }
 }

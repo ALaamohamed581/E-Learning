@@ -15,7 +15,7 @@ import { FilterPipe } from 'src/common/pipes/filterPipe';
 import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
 import { QueryString } from 'src/typse/QueryString';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
-import { VideoStatus } from '../videoStatus/videoStatus.service';
+import { VideoStatus } from '../videos/videoStatus/videoStatus.service';
 import { Request } from 'express';
 
 @Controller('students')

@@ -46,7 +46,7 @@ export class CourseService {
   findOne(id: number) {
     return this.prisma.course.findFirst({
       where: { id },
-      include: { videos: true, certificates: true, students: true },
+      include: { videos: true, certificate: true, students: true },
     });
   }
 
