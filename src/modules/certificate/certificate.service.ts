@@ -18,7 +18,7 @@ export class CertificateService {
       cousreId: courseId,
       studentId,
     });
-    if (!isCourseCompleted) {
+    if (isCourseCompleted) {
       throw new BadRequestException('Course is not completed');
     }
 

@@ -34,6 +34,7 @@ export class StudentController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
+    
     return this.studentService.findOne(+id);
   }
   @Patch('reset-password/:id')

@@ -2,54 +2,88 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
 import { PrismaService } from 'src/modules/global/prisma.service';
-import { i } from 'vite/dist/node/types.d-aGj9QkWt';
 
 @Injectable()
 export class VideoService {
   constructor(private readonly prisma: PrismaService) {}
+
   async uploadVideo(
-    Teacherid: number,
+    teacherId: number,
     courseId: number,
     video: CreateVideoDto,
   ) {
     const course = await this.prisma.course.findFirst({
-      where: { id: courseId, teacherId: Teacherid },
+      where: { id: courseId, teacherId: teacherId },
       include: { videos: true },
     });
+
     if (!course) throw new NotFoundException('Course not found');
-    return this.prisma.course.update({
-      where: { id: courseId },
-      include: { videos: true },
+
+    const createdVideo = await this.prisma.video.create({
       data: {
-        videos: {
-          create: {
-            src: video.src,
-            name: video.name,
-            order: course.videos.length,
-            watched: false,
-          },
-        },
+        src: video.src,
+        name: video.name,
+        courseId: courseId,
+        order: course.videos.length,
+        watched: false,
       },
     });
+
+    // Fetch all students enrolled in the course
+    const { students } = await this.prisma.course.findFirst({
+      where: { id: courseId },
+      select: { students: true },
+    });
+
+    // Create VideWtached records for each student
+    await this.prisma.videWtached.createMany({
+      data: students.map((student) => ({
+        studentId: student.id,
+        VideoId: createdVideo.id,
+        courseId: courseId,
+        wtached: false,
+      })),
+    });
+
+    return createdVideo;
   }
+
   async uploadVideodirectly(
     teacherId: number,
-    courseid: number,
+    courseId: number,
     video: CreateVideoDto,
     index: number,
   ) {
     try {
       const course = await this.prisma.course.findFirst({
-        where: { id: courseid, teacherId: teacherId },
+        where: { id: courseId, teacherId: teacherId },
         include: { videos: true },
       });
 
       if (!course) throw new Error('Course not found');
-      await this.prisma.video.create({
-        data: { ...video, courseId: courseid, order: index, watched: false },
+
+      const createdVideo = await this.prisma.video.create({
+        data: { ...video, courseId: courseId, order: index, watched: false },
       });
+
+      // Fetch all students enrolled in the course
+      const { students } = await this.prisma.course.findFirst({
+        where: { id: courseId },
+        select: { students: true },
+      });
+
+      // Create VideWtached records for each student
+      await this.prisma.videWtached.createMany({
+        data: students.map((student) => ({
+          studentId: student.id,
+          VideoId: createdVideo.id,
+          courseId: courseId,
+          wtached: false,
+        })),
+      });
+
       // Update the order of existing videos
-      return await Promise.all(
+      await Promise.all(
         course.videos.map(async (v, i) => {
           if (i >= index) {
             await this.prisma.video.update({
@@ -59,6 +93,8 @@ export class VideoService {
           }
         }),
       );
+
+      return createdVideo;
     } catch (e) {
       console.log(e.message);
       throw new Error(`Failed to upload video: ${e.message}`);
@@ -77,11 +113,11 @@ export class VideoService {
     return `This action updates a #${id} video`;
   }
 
-  remove({ videoId, teacherId, courseId }) {
-    const teacher = this.prisma.teacher.findFirst({
+  async remove({ videoId, teacherId, courseId }) {
+    const teacher = await this.prisma.teacher.findFirst({
       where: { id: teacherId, AND: { course: { every: { id: courseId } } } },
     });
-    if (!teacher) return new NotFoundException('this course not found');
+    if (!teacher) throw new NotFoundException('This course not found');
 
     return this.prisma.video.delete({ where: { id: videoId } });
   }

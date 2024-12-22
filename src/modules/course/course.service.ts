@@ -64,17 +64,6 @@ export class CourseService {
       data: UpdateCourseDto,
     });
   }
-  // async uploadVidoes(id: number,videosDto[]) {
-  //   const student = await this.prisma.student.findFirst({ where: { id } });
-  //   if (!student) throw new BadRequestException('This student dosent exsits');
-  //   return this.prisma.course.update({
-  //     where: {
-  //       id,
-  //     },
-  //     include: { videos: true },
-  //     data: UpdateCourseDto,
-  //   });
-  // }
 
   remove(id: number) {
     return this.prisma.course.delete({

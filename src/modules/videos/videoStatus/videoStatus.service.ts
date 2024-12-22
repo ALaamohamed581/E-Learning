@@ -42,7 +42,7 @@ export class VideoStatus {
         wtached: false,
       },
     });
-
+    console.log(isCompelted);
     return isCompelted;
   }
 }
