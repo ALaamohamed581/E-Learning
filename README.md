@@ -99,10 +99,4 @@ Run tests with:
 
 ```bash
 npm run test
-```
 
-
-
-```
-
-This updated README includes the PostgreSQL database configuration and environment variables necessary for OAuth, email, payment integrations, and file storage.
