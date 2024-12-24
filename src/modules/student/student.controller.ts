@@ -7,6 +7,7 @@ import {
   Query,
   UseGuards,
   Req,
+  Delete,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { UpdateStudentDto } from './dto/update-student.dto';
@@ -25,16 +26,21 @@ export class StudentController {
     private readonly videoStatus: VideoStatus,
   ) {}
   @Get()
-  findAll(
+  async findAll(
     @Query(new PaginationPipe())
     { limit, queryStr, skip, page, sort }: QueryString,
   ) {
-    return this.studentService.findAll({ limit, queryStr, skip, page, sort });
+    return await this.studentService.findAll({
+      limit,
+      queryStr,
+      skip,
+      page,
+      sort,
+    });
   }
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    
     return this.studentService.findOne(+id);
   }
   @Patch('reset-password/:id')
@@ -67,5 +73,9 @@ export class StudentController {
       studentId,
       VideoId: videoId,
     });
+  }
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.studentService.remove(id);
   }
 }

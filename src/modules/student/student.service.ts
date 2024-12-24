@@ -84,4 +84,7 @@ export class StudentService {
       data: { password: exsitingUser.password },
     });
   }
+  async remove(id) {
+    await this.prisma.student.delete({ where: { id } });
+  }
 }

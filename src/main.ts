@@ -23,7 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/v1', app, documentFactory);
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'src/views'));
-
+  app.enableCors();
   // Set the view engine to pug
   app.setViewEngine('pug');
   await app.listen(process.env.PORT || 8000, () => {

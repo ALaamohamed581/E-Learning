@@ -5,7 +5,7 @@ export class CreateStudentDto {
   @IsString()
   firstName: string;
 
-  @IsString()
+  @IsString({})
   lastName: string;
 
   @IsEmail()
