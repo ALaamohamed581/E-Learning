@@ -11,6 +11,7 @@ import { CourseModule } from './modules/course/course.module';
 import { VideoModule } from './modules/video/video.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { VideoStatusModule } from './modules/videos/videoStatus/videoStatus.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { VideoStatusModule } from './modules/videos/videoStatus/videoStatus.modu
     VideoModule,
     CertificateModule,
     VideoStatusModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,12 +24,12 @@ export const AuthGuard = (role = 'student'): any => {
       let secret: string;
       const request = context.switchToHttp().getRequest();
       const { authCookie: token } = request.cookies;
-
-      if (role === 'teacher') {
-        secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
-      }
+      // const secretVarName = `${role.toUpperCase()}_AUTH_TOKEN_SECRET`;
       if (role === 'student') {
         secret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
+      }
+      if (role === 'teacher') {
+        secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
       }
 
       if (!token) {

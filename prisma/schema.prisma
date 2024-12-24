@@ -26,6 +26,7 @@ model Student {
 certificate Certificate[]
   courses           Course[]
   orders       Order[]
+  role Roles @default(STUDENT)
 StudentPermission Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
@@ -39,6 +40,7 @@ model Teacher {
   password     String
   image        String
   phoneNumber  String
+  role Roles @default(TEACHER)
   students     Student[]
 permissions Permission[]
 course Course[]
@@ -136,7 +138,7 @@ model Admin {
   name         String
   email        String           @unique
   password     String
-  role         String
+  role Roles        @default(ADMIN)
 permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
@@ -168,3 +170,9 @@ model Order {
 
 
 
+ enum Roles{
+  STUDENT 
+  TEACHER
+  ADMIN
+  SUPER_ADMIN
+}

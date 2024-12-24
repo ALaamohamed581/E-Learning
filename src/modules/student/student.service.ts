@@ -4,12 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { PrismaService } from 'src/modules/global/prisma.service';
+import { PrismaService } from '../global/prisma.service';
 import * as argon2 from 'argon2';
 import { UpdatePasswordDto } from 'src/common/dtos/updatePassword.dto';
 import { QueryString } from 'src/typse/QueryString';
 import { paginatedData } from '../../typse/QueryString';
-import { promises } from 'dns';
 
 @Injectable()
 export class StudentService {

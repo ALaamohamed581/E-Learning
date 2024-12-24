@@ -9,6 +9,7 @@ import { PlainToInstanceMixin } from 'src/common/pipes/palinToInstance.pipe';
 import { CreateStudentDto } from 'src/modules/student/dto/create-student.dto';
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { BadRequestException } from '@nestjs/common';
+import { CreateAdminDto } from 'src/modules/admin/dto/create-admin.dto';
 
 @Injectable()
 export class EntityInterCetor implements NestInterceptor {
@@ -25,6 +26,8 @@ export class EntityInterCetor implements NestInterceptor {
       dtoClass = CreateStudentDto;
     } else if (entity === 'teacher') {
       dtoClass = CreateTeacherDto;
+    } else if (entity === 'admin') {
+      dtoClass = CreateAdminDto;
     } else {
       throw new BadRequestException('Invalid entity type');
     }

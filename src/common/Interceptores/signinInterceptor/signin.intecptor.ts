@@ -20,14 +20,18 @@ export const SignIn = ({ role, authSecret = '', refSecret = '' }): any => {
       const res = context.switchToHttp().getResponse();
       const req = context.switchToHttp().getRequest();
       const { entity } = req.params;
-      if (entity === 'teacher') {
-        refSecret = process.env.TEACHER_REFRESH_TOKEN_SECRET as string;
-        authSecret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
-      } else if (entity === 'student') {
-        authSecret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
-        refSecret = process.env.STUDENT_REFRESH_TOKEN_SECRET as string;
-      }
-
+      // if (entity === 'teacher') {
+      //   refSecret = process.env.TEACHER_REFRESH_TOKEN_SECRET as string;
+      //   authSecret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
+      // } else if (entity === 'student') {
+      //   authSecret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
+      //   refSecret = process.env.STUDENT_REFRESH_TOKEN_SECRET as string;
+      // } else if (entity === 'student') {
+      //   authSecret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
+      //   refSecret = process.env.STUDENT_REFRESH_TOKEN_SECRET as string;
+      // }
+      const refSecret = `${entity.toUpperCase()}_REFRESH_TOKEN_SECRET`;
+      const authSecret = `${entity.toUpperCase()}_AUTH_TOKEN_SECRET`;
       return next.handle().pipe(
         tap(() => {
           const [authToken, refreshToken] = this.jwt.generateTokens([

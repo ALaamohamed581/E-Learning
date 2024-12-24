@@ -4,11 +4,12 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/modules/global/prisma.service';
+import { PrismaService } from '../global/prisma.service';
 import * as argon2 from 'argon2';
 import { AuthData } from 'src/typse/token.types';
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { CreateStudentDto } from '../student/dto/create-student.dto';
+import { CreateAdminDto } from '../admin/dto/create-admin.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,15 +25,8 @@ export class AuthService {
     model.password = await argon2.hash(model.password);
 
     const newUser = (await (this.prisma[entity] as any).create({
-      data: {
-        email: model.email,
-        firstName: model.firstName,
-        lastName: model.lastName,
-        password: model.password,
-        phoneNumber: model.phoneNumber,
-        image: model.image,
-      },
-    })) as CreateTeacherDto | CreateStudentDto;
+      data: model,
+    })) as CreateTeacherDto | CreateStudentDto | CreateAdminDto;
 
     return newUser;
   }
