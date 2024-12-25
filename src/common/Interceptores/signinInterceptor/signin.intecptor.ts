@@ -30,8 +30,11 @@ export const SignIn = ({ role, authSecret = '', refSecret = '' }): any => {
       //   authSecret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
       //   refSecret = process.env.STUDENT_REFRESH_TOKEN_SECRET as string;
       // }
-      const refSecret = `${entity.toUpperCase()}_REFRESH_TOKEN_SECRET`;
-      const authSecret = `${entity.toUpperCase()}_AUTH_TOKEN_SECRET`;
+      const refSecret =
+        process.env[`${entity.toUpperCase()}_REFRESH_TOKEN_SECRET`];
+
+      const authSecret =
+        process.env[`${entity.toUpperCase()}_AUTH_TOKEN_SECRET`];
       return next.handle().pipe(
         tap(() => {
           const [authToken, refreshToken] = this.jwt.generateTokens([
@@ -40,11 +43,11 @@ export const SignIn = ({ role, authSecret = '', refSecret = '' }): any => {
           ]);
           res
             .cookie('refCookie', refreshToken, {
-              maxAge: 1000 * 60 * 60 * 24, // 24 hours
+              maxAge: 1000 * 60 * 60 * 24,
               secure: true,
             })
             .cookie('authCookie', authToken, {
-              maxAge: 1000 * 60 * 15, // 15 minutes
+              maxAge: 1000 * 60 * 15,
               secure: true,
               httpOnly: true,
             })

@@ -13,17 +13,16 @@ export const RefrshGuradGuard = (role: string): any => {
     constructor(private readonly jwtService: JwtService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-      let secret;
       const request = context.switchToHttp().getRequest();
       const { refCookie: refTokne } = request.cookies;
       const { entity } = request.params;
 
-      if (entity === 'teacher') {
-        secret = process.env.TEACHER_REFRESH_TOKEN_SECRET as string;
-      } else if (entity === 'student') {
-        secret = process.env.STUDENT_REFRESH_TOKEN_SECRET as string;
-      }
-
+      // if (entity === 'teacher') {
+      //   secret = process.env.TEACHER_REFRESH_TOKEN_SECRET as string;
+      // } else if (entity === 'student') {
+      //   secret = process.env.STUDENT_REFRESH_TOKEN_SECRET as string;
+      // }
+      const secret = process.env[`${role.toUpperCase()}_REFRESH_TOKEN_SECRET`];
       if (!refTokne) {
         throw new UnauthorizedException('No refresh cookie found');
       }

@@ -15,12 +15,13 @@ export class AccessRokenInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest();
 
     const { entity } = req.params;
-    let secret = '';
 
-    if (entity === 'teacher')
-      secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
-    if (entity === 'student')
-      secret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
+    // if (entity === 'teacher')
+    //   secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
+    // if (entity === 'student')
+    //   secret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
+    const secret = process.env[`${entity.toUpperCase()}_AUTH_TOKEN_SECRET`];
+
     return next.handle().pipe(
       tap(() => {
         const [authToken] = this.jwt.generateTokens([

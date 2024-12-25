@@ -14,5 +14,5 @@ export type Token = {
 export type Payload = CreateStudentDto | CreateTeacherDto;
 export type AuthData = {
   model: CreateStudentDto | CreateTeacherDto;
-  entity: 'student' | 'teacher';
+  entity: string;
 };

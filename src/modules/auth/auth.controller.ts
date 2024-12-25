@@ -76,7 +76,7 @@ export class AuthController {
   @UseInterceptors(EntityInterCetor)
   signUp(
     @Body() model: CreateStudentDto | CreateTeacherDto,
-    @Param('entity') entity: 'student' | 'teacher',
+    @Param('entity') entity: string,
   ) {
     return this.authService.signUp({ entity, model });
   }

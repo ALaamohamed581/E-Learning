@@ -21,17 +21,16 @@ export const AuthGuard = (role = 'student'): any => {
     constructor(private readonly JWTAuthService: JWTAuthService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-      let secret: string;
       const request = context.switchToHttp().getRequest();
       const { authCookie: token } = request.cookies;
       // const secretVarName = `${role.toUpperCase()}_AUTH_TOKEN_SECRET`;
-      if (role === 'student') {
-        secret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
-      }
-      if (role === 'teacher') {
-        secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
-      }
-
+      // if (role === 'student') {
+      //   secret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
+      // }
+      // if (role === 'teacher') {
+      //   secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
+      // }
+      const secret = process.env[`${role.toUpperCase()}_AUTH_TOKEN_SECRET`];
       if (!token) {
         throw new UnauthorizedException('No auth cookie found');
       }
