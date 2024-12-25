@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../global/prisma.service';
 import * as argon2 from 'argon2';
-import { AuthData } from 'src/typse/token.types';
+import { AuthData } from 'src/common/typse/token.types';
 import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { CreateStudentDto } from '../student/dto/create-student.dto';
 import { CreateAdminDto } from '../admin/dto/create-admin.dto';
@@ -33,6 +33,7 @@ export class AuthService {
   async signIn(email: string, password: string, entity: 'student' | 'teacher') {
     const existingUser = await (this.prisma[entity] as any).findFirst({
       where: { email },
+      include: { permissions: true },
     });
     if (!existingUser)
       throw new BadRequestException('This email dosent exsits');
@@ -55,6 +56,6 @@ export class AuthService {
       return new NotFoundException('user has been deleted or dose not exsits');
     }
 
-    return 'acces token accquired';
+    return 'access token acquired';
   }
 }

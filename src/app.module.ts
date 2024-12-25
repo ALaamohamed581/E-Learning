@@ -1,3 +1,12 @@
+declare module 'express' {
+  interface Request {
+    payload?: Payload;
+    permissions?: string[];
+    queryString?: any;
+    userId?: number;
+  }
+}
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,11 +21,11 @@ import { CertificateModule } from './modules/certificate/certificate.module';
 import { VideoStatusModule } from './modules/videos/videoStatus/videoStatus.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { GlobalModlue } from './modules/global/global.module';
+import { Payload } from './common/typse/token.types';
 
 @Module({
   imports: [
     UtlisModule.forRoot(),
-
     GlobalModlue.forRoot(),
     StudentModule,
     AuthModule,

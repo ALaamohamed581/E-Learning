@@ -14,7 +14,7 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { UpdatePasswordDto } from 'src/common/dtos/updatePassword.dto';
 import { FilterPipe } from 'src/common/pipes/filterPipe';
 import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
-import { QueryString } from 'src/typse/QueryString';
+import { QueryString } from 'src/common/typse/QueryString';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { VideoStatus } from '../videos/videoStatus/videoStatus.service';
 import { Request } from 'express';

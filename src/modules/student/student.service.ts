@@ -7,8 +7,8 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from '../global/prisma.service';
 import * as argon2 from 'argon2';
 import { UpdatePasswordDto } from 'src/common/dtos/updatePassword.dto';
-import { QueryString } from 'src/typse/QueryString';
-import { paginatedData } from '../../typse/QueryString';
+import { QueryString } from 'src/common/typse/QueryString';
+import { paginatedData } from '../../common/typse/QueryString';
 
 @Injectable()
 export class StudentService {

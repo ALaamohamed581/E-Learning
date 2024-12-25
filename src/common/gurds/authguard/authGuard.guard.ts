@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JWTAuthService } from 'src/modules/utlis/JWTAuthServicer.service';
-import { Payload } from 'src/typse/token.types';
+import { Payload } from 'src/common/typse/token.types';
 
 declare module 'express' {
   interface Request {
@@ -23,17 +23,13 @@ export const AuthGuard = (role = 'student'): any => {
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const request = context.switchToHttp().getRequest();
       const { authCookie: token } = request.cookies;
-      // const secretVarName = `${role.toUpperCase()}_AUTH_TOKEN_SECRET`;
-      // if (role === 'student') {
-      //   secret = process.env.STUDENT_AUTH_TOKEN_SECRET as string;
-      // }
-      // if (role === 'teacher') {
-      //   secret = process.env.TEACHER_AUTH_TOKEN_SECRET as string;
-      // }
+
       const secret = process.env[`${role.toUpperCase()}_AUTH_TOKEN_SECRET`];
+
       if (!token) {
         throw new UnauthorizedException('No auth cookie found');
       }
+
       try {
         const decoded = this.JWTAuthService.VerifyAuthToken({ token, secret });
 

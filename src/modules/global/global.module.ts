@@ -1,3 +1,5 @@
+import * as path from 'path';
+
 import { DynamicModule, Logger, Module } from '@nestjs/common';
 import {
   AcceptLanguageResolver,
@@ -5,6 +7,7 @@ import {
   I18nModule,
   QueryResolver,
 } from 'nestjs-i18n';
+
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule } from '@nestjs/config';
 
@@ -13,7 +16,6 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionFilter } from '../../common/helpers/allExceptionsFilter';
 
-import * as path from 'path';
 import { PrismaService } from './prisma.service';
 
 @Module({})

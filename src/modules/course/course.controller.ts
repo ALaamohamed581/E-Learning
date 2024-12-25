@@ -16,7 +16,7 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { Request } from 'express';
 import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
-import { QueryString } from 'src/typse/QueryString';
+import { QueryString } from 'src/common/typse/QueryString';
 
 @Controller('courses')
 export class CourseController {

@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { URLSearchParams } from 'url';
 import axios from 'axios';
 import { CreateStudentDto } from '../student/dto/create-student.dto';
 import { AuthService } from './auth.service';

@@ -1,5 +1,5 @@
 import { PipeTransform, Injectable } from '@nestjs/common';
-import { QueryString } from 'src/typse/QueryString';
+import { QueryString } from 'src/common/typse/QueryString';
 
 @Injectable()
 export class PaginationPipe implements PipeTransform {
