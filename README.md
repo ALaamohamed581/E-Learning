@@ -1,5 +1,4 @@
-
-```markdown
+````markdown
 # E-Learning Platform
 
 An online platform to facilitate learning through courses and tutorials for students and teachers. This project is built using **NestJS** for the backend, **PostgreSQL** for the database, and integrates user authentication and role-based access for both students and teachers.
@@ -40,6 +39,7 @@ Make sure you have the following installed:
    git clone https://github.com/ALaamohamed581/E-Learning.git
    cd E-Learning
    ```
+````
 
 2. Install dependencies:
 
@@ -58,6 +58,8 @@ Make sure you have the following installed:
    CSRF_SECRET=your-csrf-secret
    TEACHER_REFRESH_TOKEN_SECRET=your-teacher-refresh-token-secret
    TEACHER_AUTH_TOKEN_SECRET=your-teacher-auth-token-secret
+   ADMIN_AUTH_TOKEN_SECRET=your-ADMIN-auth-token-secret
+   ADMIN_REFRESH_TOKEN_SECRET=your-ADMIN-refresh-token-secret
    COOKIE_SECRET=your-cookie-secret
    STUDENT_REFRESH_TOKEN_SECRET=your-student-refresh-token-secret
    STUDENT_AUTH_TOKEN_SECRET=your-student-auth-token-secret
@@ -82,8 +84,6 @@ Make sure you have the following installed:
 
    The application should now be running at `http://localhost:3000`.
 
-
-
 ## Payment Integration
 
 - **Stripe**: Used for handling payments related to course enrollments. You will need to configure your **Stripe API key**.
@@ -100,3 +100,4 @@ Run tests with:
 ```bash
 npm run test
 
+```
