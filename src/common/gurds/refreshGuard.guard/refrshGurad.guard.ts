@@ -17,7 +17,8 @@ export const RefrshGuradGuard = (role: string): any => {
       const { refCookie: refTokne } = request.cookies;
       const { entity } = request.params;
 
-      const secret = process.env[`${role.toUpperCase()}_REFRESH_TOKEN_SECRET`];
+      const secret =
+        process.env[`${entity.toUpperCase()}_REFRESH_TOKEN_SECRET`];
       if (!refTokne) {
         throw new UnauthorizedException('No refresh cookie found');
       }

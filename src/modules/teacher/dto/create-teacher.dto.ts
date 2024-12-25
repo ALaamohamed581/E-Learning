@@ -17,8 +17,6 @@ export class CreateTeacherDto {
   @IsString()
   password: string;
 
-  @IsNotEmpty()
-  @IsString()
   @IsOptional()
   image: string;
 

@@ -55,7 +55,5 @@ export class AuthService {
     if (!existingUser) {
       return new NotFoundException('user has been deleted or dose not exsits');
     }
-
-    return 'access token acquired';
   }
 }

@@ -123,7 +123,6 @@ export class AuthController {
   ) {
     const { userId } = request;
     request.payload = this.authService.getAuyhToken(userId, entity) as any;
-    return 'succes';
   }
 }
 function typeOf(model: CreateStudentDto | CreateTeacherDto): any {

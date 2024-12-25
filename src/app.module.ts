@@ -22,11 +22,13 @@ import { VideoStatusModule } from './modules/videos/videoStatus/videoStatus.modu
 import { AdminModule } from './modules/admin/admin.module';
 import { GlobalModlue } from './modules/global/global.module';
 import { Payload } from './common/typse/token.types';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
     UtlisModule.forRoot(),
     GlobalModlue.forRoot(),
+    ChatModule,
     StudentModule,
     AuthModule,
     TeacherModule,
