@@ -4,33 +4,41 @@ import {
   Injectable,
   mixin,
   UnauthorizedException,
+  Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JWTAuthService } from '../../../modules/utlis/JWTAuthServicer.service';
 
-const RoleGuard = ({ role, ...permissions }) => {
+const RoleGuard = (permission: string) => {
   @Injectable()
   class RoleMixin implements CanActivate {
-    constructor(private readonly JWTAuthService: JWTAuthService) {}
+    public readonly logger = new Logger(RoleMixin.name);
+
+    constructor(public readonly JWTAuthService: JWTAuthService) {}
 
     canActivate(
       context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
       const req = context.switchToHttp().getRequest();
 
-      const { authCookie: token } = req.cookies;
-      const secret = process.env[`${role.toUpperCase()}_AUTH_TOKEN_SECRET`];
       try {
-        const decoded = this.JWTAuthService.VerifyAuthToken({ token, secret });
+        const { permissions } = req;
 
-        req.userId = decoded.payload.id;
+        if (!permissions || !Array.isArray(permissions)) {
+          throw new UnauthorizedException('Permissions are missing or invalid');
+        }
 
+        if (!permissions.includes(permission)) {
+          return false;
+        }
         return true;
       } catch (error) {
-        console.log(error.message);
+        this.logger.error(error.message);
         throw new UnauthorizedException('Invalid or expired token');
       }
     }
   }
   return mixin(RoleMixin);
 };
+
+export default RoleGuard;

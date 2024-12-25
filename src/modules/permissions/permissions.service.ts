@@ -7,6 +7,7 @@ import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PrismaService } from '../global/prisma.service';
 import { QueryString } from 'src/common/typse/QueryString';
+import { connect } from 'http2';
 
 @Injectable()
 export class PermissionsService {
@@ -90,5 +91,35 @@ export class PermissionsService {
       throw new NotFoundException('Permission not found');
     }
     return this.prisma.permission.delete({ where: { id } });
+  }
+
+  async assignPermission({
+    id,
+    entity,
+    prmissoinId,
+  }: {
+    id: number;
+    entity: string;
+    prmissoinId: number;
+  }) {
+    // Find the model
+    const model = await (this.prisma[entity] as any).findFirst({
+      where: { id },
+    });
+
+    // Handle case where model is not found
+    if (!model) {
+      throw new NotFoundException(`${entity} with ID ${id} not found`);
+    }
+
+    // Update the model and connect permissions
+    return await (this.prisma[entity] as any).update({
+      where: { id },
+      data: {
+        permissions: {
+          connect: { id: prmissoinId },
+        },
+      },
+    });
   }
 }

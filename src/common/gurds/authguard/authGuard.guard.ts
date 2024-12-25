@@ -13,6 +13,7 @@ declare module 'express' {
     payload?: Payload;
     queryString?: any;
     userId?: number;
+    permssions: string[];
   }
 }
 export const AuthGuard = (role = 'student'): any => {
@@ -34,7 +35,8 @@ export const AuthGuard = (role = 'student'): any => {
         const decoded = this.JWTAuthService.VerifyAuthToken({ token, secret });
 
         request.userId = decoded.payload.id;
-
+        request.permssions = decoded.payload.permissions;
+        console.log(request.permssions);
         return true;
       } catch (error) {
         console.log(error.message);

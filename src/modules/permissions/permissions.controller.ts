@@ -39,6 +39,16 @@ export class PermissionsController {
       sort,
     });
   }
+  @UseGuards(AuthGuard('ADMIN'))
+  @Patch('assign/:entity/:id/:prmissoinId')
+  assigPermisson(
+    @Param('entity') entity: string,
+    @Param('id') id: number,
+    @Param('prmissoinId') prmissoinId: number,
+  ) {
+    console.log(entity, id, prmissoinId);
+    this.permissionsService.assignPermission({ id, entity, prmissoinId });
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

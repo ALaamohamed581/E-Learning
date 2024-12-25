@@ -34,7 +34,7 @@ export class TeacherService {
       omit: {
         password: true,
       },
-      include: { students: true, course: true },
+      include: { students: true, course: true, permissions: true },
     });
     if (!teacher) throw new Error('Teacher not found');
     return teacher;
