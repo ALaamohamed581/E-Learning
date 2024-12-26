@@ -142,14 +142,17 @@ model Admin {
 permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+// sessionId Message[]
 }
 
 model Message {
   id           Int              @id @default(autoincrement())
-  sender       String
-  receiver     String
+  senderid       String 
+  receiverid     String 
   content      String
-  date         DateTime
+  // adminId Int
+  // admin Admin? @relation(fields: [adminId],references: [id])
+sessionId String 
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt

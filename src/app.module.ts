@@ -37,6 +37,7 @@ import { ChatModule } from './modules/chat/chat.module';
     CertificateModule,
     VideoStatusModule,
     AdminModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,39 +5,74 @@ import {
   MessageBody,
 } from '@nestjs/websockets';
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { Server } from 'socket.io';
-import { logger } from 'nestjs-i18n';
+import { Server, Socket } from 'socket.io';
 import { SocketAuth } from 'src/common/middlewares/chatAuthtication';
+import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../global/prisma.service';
+import { CreateMessageDto } from './dto/createMessage.dto';
+
 @WebSocketGateway({ transports: ['websocket'] })
 export class ChatGateway implements OnModuleInit, OnModuleDestroy {
-  constructor(private readonly socketAuth: SocketAuth) {}
+  constructor(
+    private readonly socketAuth: SocketAuth,
+    private readonly prisma: PrismaService,
+  ) {}
+
   @WebSocketServer()
   server: Server;
-  afterInit(clinet: Server) {
-    clinet.use(async (req, next) => {
-      await this.socketAuth.use(req, next);
-      console.log(req.userId);
+  private userSockets = new Map<number, string>();
+  onModuleInit() {
+    // this.server.use(async (socket: Socket, next) => {
+    //   try {
+    //     // await this.socketAuth.use(socket, next);
+    //     console.log(`User connected: ${socket.id}`);
+    //     next();
+    //   } catch (error) {
+    //     next(error);
+    //   }
+    // });
 
-      next();
+    this.server.on('connection', (socket: Socket) => {
+      console.log(`New client connected: ${socket.id}`);
     });
   }
-  onModuleInit(): any {
-    this.server.on('connection', (client) =>
-      console.log(`connection connected: ${client.id}`),
-    );
-  }
+
   @SubscribeMessage('newSentMessage')
-  handleEvent(@MessageBody() data: string): string {
+  handleNewSentMessage(@MessageBody() data: string): void {
     this.server.emit('newSentMessage', data);
-    return data;
   }
 
   @SubscribeMessage('privateChatMessage')
-  privateChatMessage(
-    @MessageBody() data: { targetClientId: string; messageInterface: string },
-  ) {
-    this.server.to(data.targetClientId).emit('privateChatMessage', data);
+  async handlePrivateChatMessage(
+    @MessageBody() createMessageDto: CreateMessageDto,
+  ): Promise<void> {
+    createMessageDto.sessionId =
+      createMessageDto.receiverid + createMessageDto.senderid;
+    console.log(createMessageDto);
+    const savedMessage = await this.prisma.message.create({
+      data: {
+        senderid: createMessageDto.senderid,
+        content: createMessageDto.content,
+        sessionId: createMessageDto.sessionId,
+        receiverid: createMessageDto.receiverid,
+      },
+    });
+
+    // Get the recipient's socket ID
+    // const receiverSocketId = this.userSockets.get(createMessageDto.receiverid);
+
+    if (createMessageDto.receiverid) {
+      // Emit the message to the receiver
+      this.server.to(createMessageDto.receiverid).emit('privateChatMessage', {
+        content: createMessageDto.content,
+      });
+    } else {
+      console.log(
+        `Receiver with ID ${createMessageDto.receiverid} is not connected.`,
+      );
+    }
   }
+
   onModuleDestroy() {
     this.server.disconnectSockets();
   }
