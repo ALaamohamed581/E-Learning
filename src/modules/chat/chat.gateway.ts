@@ -10,6 +10,7 @@ import { SocketAuth } from 'src/common/middlewares/chatAuthtication';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../global/prisma.service';
 import { CreateMessageDto } from './dto/createMessage.dto';
+import { connect } from 'http2';
 
 @WebSocketGateway({ transports: ['websocket'] })
 export class ChatGateway implements OnModuleInit, OnModuleDestroy {
@@ -20,17 +21,22 @@ export class ChatGateway implements OnModuleInit, OnModuleDestroy {
 
   @WebSocketServer()
   server: Server;
+  userId: string;
+  role: string;
   private userSockets = new Map<number, string>();
   onModuleInit() {
-    // this.server.use(async (socket: Socket, next) => {
-    //   try {
-    //     // await this.socketAuth.use(socket, next);
-    //     console.log(`User connected: ${socket.id}`);
-    //     next();
-    //   } catch (error) {
-    //     next(error);
-    //   }
-    // });
+    this.server.use(async (socket: Socket, next) => {
+      try {
+        await this.socketAuth.use(socket, next);
+        const { userId, role }: any = socket;
+        this.userId = userId;
+        this.role = role;
+        console.log(`User connected: ${socket.id}`);
+        next();
+      } catch (error) {
+        next(error);
+      }
+    });
 
     this.server.on('connection', (socket: Socket) => {
       console.log(`New client connected: ${socket.id}`);
@@ -47,28 +53,30 @@ export class ChatGateway implements OnModuleInit, OnModuleDestroy {
     @MessageBody() createMessageDto: CreateMessageDto,
   ): Promise<void> {
     createMessageDto.sessionId =
-      createMessageDto.receiverid + createMessageDto.senderid;
-    console.log(createMessageDto);
+      createMessageDto.receiverId + createMessageDto.senderId;
+
     const savedMessage = await this.prisma.message.create({
       data: {
-        senderid: createMessageDto.senderid,
         content: createMessageDto.content,
+        senderId: createMessageDto.senderId,
+        receiverId: createMessageDto.receiverId,
         sessionId: createMessageDto.sessionId,
-        receiverid: createMessageDto.receiverid,
+
+        [this.role]: { connect: { id: this.userId } },
       },
     });
-
+    console.log(savedMessage);
     // Get the recipient's socket ID
     // const receiverSocketId = this.userSockets.get(createMessageDto.receiverid);
 
-    if (createMessageDto.receiverid) {
+    if (createMessageDto.receiverId) {
       // Emit the message to the receiver
-      this.server.to(createMessageDto.receiverid).emit('privateChatMessage', {
+      this.server.to(createMessageDto.receiverId).emit('privateChatMessage', {
         content: createMessageDto.content,
       });
     } else {
       console.log(
-        `Receiver with ID ${createMessageDto.receiverid} is not connected.`,
+        `Receiver with ID ${createMessageDto.receiverId} is not connected.`,
       );
     }
   }

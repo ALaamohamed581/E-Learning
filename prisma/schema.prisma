@@ -30,6 +30,7 @@ certificate Certificate[]
 permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+  sessionId Message[] 
 }
 
 model Teacher {
@@ -142,17 +143,21 @@ model Admin {
 permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
-// sessionId Message[]
+ sessionId Message[]
 }
 
 model Message {
   id           Int              @id @default(autoincrement())
-  senderid       String 
-  receiverid     String 
+  senderId   String?
+  receiverId String?
+  sessionId  String?
   content      String
-  // adminId Int
-  // admin Admin? @relation(fields: [adminId],references: [id])
-sessionId String 
+
+  adminId Int?
+  studentId Int?
+   admin Admin? @relation(fields: [adminId],references: [id])
+   student Student? @relation(fields: [studentId],references: [id])
+
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt

@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { PrismaService } from '../global/prisma.service';
 
 @Injectable()
 export class AdminService {
+  constructor(private readonly prisma: PrismaService) {}
   create(createAdminDto: CreateAdminDto) {
     return 'This action adds a new admin';
   }
@@ -13,7 +15,10 @@ export class AdminService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} admin`;
+    return this.prisma.admin.findUnique({
+      where: { id },
+      include: { sessionId: true },
+    });
   }
 
   update(id: number, updateAdminDto: UpdateAdminDto) {
