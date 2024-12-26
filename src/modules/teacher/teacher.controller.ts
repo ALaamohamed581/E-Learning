@@ -17,7 +17,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
 import { QueryString } from 'src/common/typse/QueryString';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { VideoPipe } from 'src/common/pipes/images.pipe';
+import { VideoPipe } from 'src/common/pipes/video.pipe';
 import { CreateVideoDto } from '../video/dto/create-video.dto';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { Request } from 'express';

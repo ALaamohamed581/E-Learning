@@ -15,7 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
-import { VideoPipe } from 'src/common/pipes/images.pipe';
+import { VideoPipe } from 'src/common/pipes/video.pipe';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { Request } from 'express';
 
