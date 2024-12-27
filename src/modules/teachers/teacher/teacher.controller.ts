@@ -72,6 +72,7 @@ export class TeacherController {
   ) {
     [CreateVideoDto.src] = videoUrl;
     CreateVideoDto.courseId = courseId;
+
     const { index } = body;
 
     return this.VideoService.uploadVideodirectly(

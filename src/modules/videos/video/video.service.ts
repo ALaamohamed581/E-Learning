@@ -29,22 +29,6 @@ export class VideoService {
       },
     });
 
-    // Fetch all students enrolled in the course
-    const { students } = await this.prisma.course.findFirst({
-      where: { id: courseId },
-      select: { students: true },
-    });
-
-    // Create VideWtached records for each student
-    await this.prisma.videWtached.createMany({
-      data: students.map((student) => ({
-        studentId: student.id,
-        VideoId: createdVideo.id,
-        courseId: courseId,
-        wtached: false,
-      })),
-    });
-
     return createdVideo;
   }
 
@@ -70,16 +54,6 @@ export class VideoService {
       const { students } = await this.prisma.course.findFirst({
         where: { id: courseId },
         select: { students: true },
-      });
-
-      // Create VideWtached records for each student
-      await this.prisma.videWtached.createMany({
-        data: students.map((student) => ({
-          studentId: student.id,
-          VideoId: createdVideo.id,
-          courseId: courseId,
-          wtached: false,
-        })),
       });
 
       // Update the order of existing videos
