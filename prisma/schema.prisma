@@ -31,6 +31,7 @@ permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   sessionId Message[] 
+    @@index([id])
 }
 
 model Teacher {
@@ -47,6 +48,7 @@ permissions Permission[]
 course Course[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+    @@index([id])
 }
 
 
@@ -71,6 +73,7 @@ orders Order[]
 teacher Teacher  @relation(fields: [teacherId], references: [id])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+    @@index([id])
 }
 
 model Video {
@@ -85,6 +88,7 @@ watched Boolean
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   videoWatched VideWtached[]
+  @@index([id])
 }
 
 model VideWtached{
@@ -114,7 +118,7 @@ CourseDuration Int
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
-
+  @@index([id])
   }
 
 model Permission {
@@ -126,6 +130,7 @@ model Permission {
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+    @@index([id])
 }
 
 
@@ -144,6 +149,7 @@ permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
  sessionId Message[]
+   @@index([id])
 }
 
 model Message {
@@ -158,7 +164,7 @@ model Message {
    admin Admin? @relation(fields: [adminId],references: [id])
    student Student? @relation(fields: [studentId],references: [id])
 
-
+  @@index([id])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -171,7 +177,7 @@ model Order {
   studentId    Int
   student      Student          @relation(fields: [studentId], references: [id])
   courses      Course[]
-
+  @@index([id])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
