@@ -58,7 +58,7 @@ export class TeacherController {
   ) {
     [CreateVideoDto.src] = videoUrl;
 
-    return this.VideoService.uploadVideo(1, courseId, CreateVideoDto);
+    return this.VideoService.uploadVideo(req.userId, courseId, CreateVideoDto);
   }
   @Patch(':courseid/courses')
   @UseInterceptors(FileInterceptor('video'))
@@ -66,6 +66,7 @@ export class TeacherController {
   uploadVideodirectly(
     @Param('courseid') courseId: number,
     @Body() CreateVideoDto: CreateVideoDto,
+    @Req() req: Request,
     @UploadedFile(new VideoPipe()) videoUrl: string,
     @Body() body: any,
   ) {
@@ -74,7 +75,7 @@ export class TeacherController {
     const { index } = body;
 
     return this.VideoService.uploadVideodirectly(
-      1,
+      req.userId,
       courseId,
       CreateVideoDto,
       +index,

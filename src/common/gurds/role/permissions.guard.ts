@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { JWTAuthService } from '../../../modules/utlis/JWTAuthServicer.service';
 
-const RoleGuard = (permission: string) => {
+const PermissionsGuard = (permission: string) => {
   @Injectable()
   class RoleMixin implements CanActivate {
     public readonly logger = new Logger(RoleMixin.name);
@@ -22,7 +22,8 @@ const RoleGuard = (permission: string) => {
       const req = context.switchToHttp().getRequest();
 
       try {
-        const { permissions } = req;
+        let { permissions } = req;
+        permissions = permissions.flat(1);
 
         if (!permissions || !Array.isArray(permissions)) {
           throw new UnauthorizedException('Permissions are missing or invalid');
@@ -41,4 +42,4 @@ const RoleGuard = (permission: string) => {
   return mixin(RoleMixin);
 };
 
-export default RoleGuard;
+export default PermissionsGuard;

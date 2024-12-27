@@ -34,9 +34,10 @@ export const AuthGuard = (role = 'student'): any => {
       try {
         const decoded = this.JWTAuthService.VerifyAuthToken({ token, secret });
 
-        request.userId = decoded.payload.id;
-        request.permssions = decoded.payload.permissions;
-        console.log(request.permssions);
+        request.userId = decoded.payload.existingUser.id;
+
+        request.permissions = decoded.payload.onlyAllowd;
+
         return true;
       } catch (error) {
         console.log(error.message);

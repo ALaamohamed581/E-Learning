@@ -11,8 +11,11 @@ export type Token = {
   expiresIn: string;
 };
 
-export type Payload = CreateStudentDto | CreateTeacherDto;
 export type AuthData = {
   model: CreateStudentDto | CreateTeacherDto;
   entity: string;
+};
+export type Payload = {
+  existingUser: CreateStudentDto | CreateTeacherDto;
+  onlyAllowd: string[][];
 };

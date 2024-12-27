@@ -88,8 +88,12 @@ export class AuthController {
 
     @Req() req: Request,
   ) {
-    const user = await this.authService.signIn(email, password, entity);
-    req.payload = user;
+    const { onlyAllowd, existingUser } = await this.authService.signIn(
+      email,
+      password,
+      entity,
+    );
+    req.payload = { existingUser, onlyAllowd };
 
     return 'succes';
   }

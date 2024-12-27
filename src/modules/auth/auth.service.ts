@@ -31,10 +31,19 @@ export class AuthService {
     return newUser;
   }
   async signIn(email: string, password: string, entity: 'student' | 'teacher') {
-    const existingUser = await (this.prisma[entity] as any).findFirst({
+    let existingUser = await (this.prisma[entity] as any).findFirst({
       where: { email },
-      include: { permissions: true, sessionId: true },
     });
+    let allowedPermissions = await this.prisma.permission.findMany({
+      where: {
+        [`${entity}s`]: {
+          some: { id: existingUser.id }, // This assumes a relation between `permission` and another model
+        },
+      },
+      select: { allowed: true },
+    });
+    let onlyAllowd = allowedPermissions.map((perm) => perm.allowed);
+
     if (!existingUser)
       throw new BadRequestException('This email dosent exsits');
 
@@ -44,7 +53,7 @@ export class AuthService {
     ) {
       throw new UnauthorizedException('wrong email or password');
     }
-    return existingUser;
+    return { existingUser, onlyAllowd };
   }
 
   async getAuyhToken(id: number, entity: 'student' | 'teacher') {
