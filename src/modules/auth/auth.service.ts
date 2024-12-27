@@ -7,9 +7,9 @@ import {
 import { PrismaService } from '../global/prisma.service';
 import * as argon2 from 'argon2';
 import { AuthData } from 'src/common/typse/token.types';
-import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { CreateStudentDto } from '../student/dto/create-student.dto';
 import { CreateAdminDto } from '../admin/dto/create-admin.dto';
+import { CreateTeacherDto } from '../teachers/teacher/dto/create-teacher.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
 
   async signUp({ entity, model }: AuthData) {
     const existingUser = (await (this.prisma[entity] as any).findFirst({
-      where: { email: model.email },
+      where: { email: model.email as string },
     })) as CreateTeacherDto | CreateStudentDto;
     if (existingUser)
       throw new BadRequestException('This email already exists');

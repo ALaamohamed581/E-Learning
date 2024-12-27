@@ -15,11 +15,11 @@ import { CreateStudentDto } from '../student/dto/create-student.dto';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { SignIn } from 'src/common/Interceptores/signinInterceptor/signin.intecptor';
-import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { RefrshGuradGuard } from 'src/common/gurds/refreshGuard.guard/refrshGurad.guard';
 import { ApiCookieAuth } from '@nestjs/swagger';
 import { AccessRokenInterceptor } from 'src/common/Interceptores/access-roken/access-roken.interceptor';
 import { EntityInterCetor } from 'src/common/Interceptores/validation/valdiation.interceptor';
+import { CreateTeacherDto } from '../teachers/teacher/dto/create-teacher.dto';
 
 //
 @Controller(':entity/auth')
@@ -124,7 +124,4 @@ export class AuthController {
     const { userId } = request;
     request.payload = this.authService.getAuyhToken(userId, entity) as any;
   }
-}
-function typeOf(model: CreateStudentDto | CreateTeacherDto): any {
-  throw new Error('Function not implemented.');
 }

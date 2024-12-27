@@ -7,9 +7,9 @@ import {
 import { Observable } from 'rxjs';
 import { PlainToInstanceMixin } from 'src/common/pipes/palinToInstance.pipe';
 import { CreateStudentDto } from 'src/modules/student/dto/create-student.dto';
-import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { BadRequestException } from '@nestjs/common';
 import { CreateAdminDto } from 'src/modules/admin/dto/create-admin.dto';
+import { CreateTeacherDto } from 'src/modules/teachers/teacher/dto/create-teacher.dto';
 
 @Injectable()
 export class EntityInterCetor implements NestInterceptor {

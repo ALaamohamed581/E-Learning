@@ -18,11 +18,10 @@ import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
 import { QueryString } from 'src/common/typse/QueryString';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { VideoPipe } from 'src/common/pipes/video.pipe';
-import { CreateVideoDto } from '../video/dto/create-video.dto';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { Request } from 'express';
-import { VideoService } from '../video/video.service';
-import { createReadStream } from 'fs';
+import { VideoService } from 'src/modules/videos/video/video.service';
+import { CreateVideoDto } from 'src/modules/videos/video/dto/create-video.dto';
 
 @Controller('teachers')
 export class TeacherController {

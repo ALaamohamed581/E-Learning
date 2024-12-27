@@ -1,5 +1,5 @@
 import { CreateStudentDto } from 'src/modules/student/dto/create-student.dto';
-import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
+import { CreateTeacherDto } from 'src/modules/teachers/teacher/dto/create-teacher.dto';
 
 export type TokenData = {
   token: string;

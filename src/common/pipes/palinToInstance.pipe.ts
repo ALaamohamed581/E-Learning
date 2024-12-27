@@ -1,8 +1,6 @@
-import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
-import { CreateStudentDto } from 'src/modules/student/dto/create-student.dto'; // Adjust path
-import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto'; // Adjust path
 
 export const PlainToInstanceMixin = (dtoClass: any) => {
   return async (value: any) => {
