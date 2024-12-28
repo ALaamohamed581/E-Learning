@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMessageDto } from './dto/createMessage.dto';
 import { UpdateMessageDto } from './dto/updateMessag.dto';
-import { ChatGateway } from './chat.gateway';
+import { ChatGateway } from '../../gateways/chat.gateway';
 import { PrismaService } from '../global/prisma.service';
 
 @Injectable()

@@ -4,7 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 
 declare module 'socket.io' {
   interface Socket {
-    userId?: number; // Adding custom property to Socket
+    userId?: number;
+    role?: string; // Adding custom property to Socket
   }
 }
 
@@ -15,6 +16,7 @@ export class SocketAuth {
   async use(client: Socket, next: (err?: Error) => void) {
     try {
       // Retrieve the token from the handshake headers
+      console.log(client.handshake.query.role);
       const authHeader = client.handshake.headers['authorization'];
 
       if (!authHeader) {
@@ -29,7 +31,10 @@ export class SocketAuth {
 
       // Decode and verify the JWT token
       const decoded = await this.jwt.verifyAsync(token, {
-        secret: process.env.ADMIN_AUTH_TOKEN_SECRET as string,
+        secret:
+          process.env[
+            `${(client.handshake.query.role as string).toUpperCase()}_AUTH_TOKEN_SECRET`
+          ],
       });
       console.log(decoded);
       if (!decoded || !decoded.payload.id) {
@@ -38,6 +43,8 @@ export class SocketAuth {
 
       // Attach the decoded userId to the client
       client.userId = decoded.payload.id;
+
+      client.role = client.handshake.query.role as string;
       console.log(typeof client);
       // Proceed to the next middleware or connection handler
     } catch (error) {

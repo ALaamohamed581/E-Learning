@@ -46,7 +46,7 @@ export class StudentService {
       omit: {
         password: true,
       },
-      include: { courses: true },
+      include: { courses: true, sessionId: true },
       where: { id },
     });
   }

@@ -23,6 +23,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { GlobalModlue } from './modules/global/global.module';
 import { Payload } from './common/typse/token.types';
 import { ChatModule } from './modules/chat/chat.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ChatModule } from './modules/chat/chat.module';
     VideoStatusModule,
     AdminModule,
     ChatModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

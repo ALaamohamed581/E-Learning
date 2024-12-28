@@ -40,12 +40,12 @@ export class GlobalModlue {
             new HeaderResolver(['x-lang']),
           ],
         }),
-        ThrottlerModule.forRoot([
-          {
-            ttl: 60000,
-            limit: 100,
-          },
-        ]),
+        // ThrottlerModule.forRoot([
+        //   {
+        //     ttl: 60000,
+        //     limit: 100,
+        //   },
+        // ]),
 
         ConfigModule.forRoot({
           isGlobal: true,
@@ -64,7 +64,7 @@ export class GlobalModlue {
           provide: APP_FILTER,
           useClass: AllExceptionFilter,
         },
-        { provide: APP_GUARD, useClass: ThrottlerGuard },
+        // { provide: APP_GUARD, useClass: ThrottlerGuard },
         PrismaService,
       ],
 

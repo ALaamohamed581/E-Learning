@@ -33,7 +33,7 @@ export class AuthService {
   async signIn(email: string, password: string, entity: 'student' | 'teacher') {
     const existingUser = await (this.prisma[entity] as any).findFirst({
       where: { email },
-      include: { permissions: true },
+      include: { permissions: true, sessionId: true },
     });
     if (!existingUser)
       throw new BadRequestException('This email dosent exsits');
