@@ -9,7 +9,7 @@ export class PaymentController {
     return this.paymentService.payWithStripe(+cartid);
   }
 
-  @Post('payPal/:cartId')
+  @Post('paypal/:cartId')
   PayWithPayPal(@Param('cartId') cartid: string) {
     return this.paymentService.createPayPalOrder(+cartid);
   }
