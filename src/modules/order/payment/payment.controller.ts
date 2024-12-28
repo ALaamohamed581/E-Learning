@@ -6,11 +6,11 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
   @Post('stripe/:cartId')
   paywithStripe(@Param('cartId') cartid: string) {
-    // return this.paymentService.payWithStripe(cartid);
+    return this.paymentService.payWithStripe(+cartid);
   }
 
   @Post('payPal/:cartId')
   PayWithPayPal(@Param('cartId') cartid: string) {
-    // return this.paymentService.createPayPalOrder(cartid);
+    return this.paymentService.createPayPalOrder(+cartid);
   }
 }

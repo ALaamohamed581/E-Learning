@@ -179,7 +179,7 @@ model Order {
   student      Student          @relation(fields: [studentId], references: [id])
   courses      Course[]
   @@index([id])
-  CartIt Int @unique 
+  CartId Int @unique 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -197,8 +197,8 @@ model CartItem {
   cartId   Int?
 
   cousreId Int
-  courses Course[]  
-
+  course Course     @relation(fields: [cousreId], references: [id])
+ 
   cart     Cart?   @relation(fields: [cartId], references: [id])
  
   quantity Int
@@ -210,4 +210,4 @@ model CartItem {
   TEACHER
   ADMIN
   SUPER_ADMIN
-}
+} 
