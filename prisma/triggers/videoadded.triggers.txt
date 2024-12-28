@@ -3,13 +3,13 @@ RETURNS TRIGGER AS $$
 DECLARE
     last_video_id INTEGER;
 BEGIN
-    -- الحصول على معرف آخر فيديو تم إدخاله
+ 
     SELECT id INTO last_video_id
     FROM "Video"
     ORDER BY id DESC
     LIMIT 1;
 
-    -- إدخال القيم في جدول "VideWtached"
+
     INSERT INTO "VideWtached" ("studentId", "VideoId", "wtached", "courseId")
     SELECT DISTINCT NEW."B", last_video_id, FALSE, NEW."A";
 
@@ -17,7 +17,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- إنشاء التريغر
+
 CREATE TRIGGER video_Added_trigger
 AFTER INSERT ON "_CourseToStudent"
 FOR EACH ROW

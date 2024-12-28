@@ -21,9 +21,10 @@ import { AdminModule } from './modules/admin/admin.module';
 import { GlobalModlue } from './modules/global/global.module';
 import { Payload } from './common/typse/token.types';
 import { ChatModule } from './modules/chat/chat.module';
-import { PaymentModule } from './modules/payment/payment.module';
+import { PaymentModule } from './modules/order/payment/payment.module';
 import { TeacherModule } from './modules/teachers/teacher/teacher.module';
 import { VideoModule } from './modules/videos/video/video.module';
+import { CartModule } from './modules/order/cart/cart.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { VideoModule } from './modules/videos/video/video.module';
     AdminModule,
     ChatModule,
     PaymentModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

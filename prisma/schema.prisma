@@ -31,6 +31,7 @@ permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   sessionId Message[] 
+  Carts Cart[]
     @@index([id])
 }
 
@@ -69,7 +70,7 @@ model Course {
 students     Student[]
   videos       Video[]
 orders Order[]
-
+ CartIItem CartItem[]
 teacher Teacher  @relation(fields: [teacherId], references: [id])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
@@ -178,11 +179,31 @@ model Order {
   student      Student          @relation(fields: [studentId], references: [id])
   courses      Course[]
   @@index([id])
+  CartIt Int @unique 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
+model Cart{
+ id           Int              @id @default(autoincrement())
+ studentId Int  
 
+ carttItems CartItem[]
+ orderId Int?
+  @@index([id])
+ Student Student  @relation(fields: [studentId], references: [id])
+}
+model CartItem {
+  id       Int    @id @default(autoincrement())
+  cartId   Int?
 
+  cousreId Int
+  courses Course[]  
+
+  cart     Cart?   @relation(fields: [cartId], references: [id])
+ 
+  quantity Int
+  @@index([id])
+}
 
  enum Roles{
   STUDENT 
