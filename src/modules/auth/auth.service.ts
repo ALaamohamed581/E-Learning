@@ -34,6 +34,7 @@ export class AuthService {
     let existingUser = await (this.prisma[entity] as any).findFirst({
       where: { email },
     });
+
     let allowedPermissions = await this.prisma.permission.findMany({
       where: {
         [`${entity}s`]: {
@@ -42,6 +43,7 @@ export class AuthService {
       },
       select: { allowed: true },
     });
+
     let onlyAllowd = allowedPermissions.map((perm) => perm.allowed);
 
     if (!existingUser)

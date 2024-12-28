@@ -4,16 +4,6 @@ import { PrismaService } from '../../global/prisma.service';
 export class VideoStatus {
   constructor(private readonly prisma: PrismaService) {}
 
-  async addVideos({ courseId, userId, videos }) {
-    const data = await this.prisma.videWtached.createMany({
-      data: videos.map((vid) => ({
-        studentId: userId,
-        courseId: courseId,
-        VideoId: vid.id,
-      })),
-    });
-    return data;
-  }
   async watchVideo({ courseId, studentId, VideoId, data }) {
     let foundStudent = await this.prisma.student.findFirst({
       where: {
