@@ -82,7 +82,7 @@ Make sure you have the following installed:
    npm run start:dev
    ```
 
-   The application should now be running at `http://localhost:3000`.
+   The application should now be running at `http://localhost:8000`.
 
 ## Payment Integration
 

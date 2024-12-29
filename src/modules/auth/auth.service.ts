@@ -7,9 +7,9 @@ import {
 import { PrismaService } from '../global/prisma.service';
 import * as argon2 from 'argon2';
 import { AuthData } from 'src/common/typse/token.types';
-import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
 import { CreateStudentDto } from '../student/dto/create-student.dto';
 import { CreateAdminDto } from '../admin/dto/create-admin.dto';
+import { CreateTeacherDto } from '../teachers/teacher/dto/create-teacher.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
 
   async signUp({ entity, model }: AuthData) {
     const existingUser = (await (this.prisma[entity] as any).findFirst({
-      where: { email: model.email },
+      where: { email: model.email as string },
     })) as CreateTeacherDto | CreateStudentDto;
     if (existingUser)
       throw new BadRequestException('This email already exists');
@@ -31,10 +31,21 @@ export class AuthService {
     return newUser;
   }
   async signIn(email: string, password: string, entity: 'student' | 'teacher') {
-    const existingUser = await (this.prisma[entity] as any).findFirst({
+    let existingUser = await (this.prisma[entity] as any).findFirst({
       where: { email },
-      include: { permissions: true, sessionId: true },
     });
+
+    let allowedPermissions = await this.prisma.permission.findMany({
+      where: {
+        [`${entity}s`]: {
+          some: { id: existingUser.id }, // This assumes a relation between `permission` and another model
+        },
+      },
+      select: { allowed: true },
+    });
+
+    let onlyAllowd = allowedPermissions.map((perm) => perm.allowed);
+
     if (!existingUser)
       throw new BadRequestException('This email dosent exsits');
 
@@ -44,7 +55,7 @@ export class AuthService {
     ) {
       throw new UnauthorizedException('wrong email or password');
     }
-    return existingUser;
+    return { existingUser, onlyAllowd };
   }
 
   async getAuyhToken(id: number, entity: 'student' | 'teacher') {

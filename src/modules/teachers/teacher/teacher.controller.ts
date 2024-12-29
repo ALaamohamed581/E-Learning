@@ -18,11 +18,10 @@ import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
 import { QueryString } from 'src/common/typse/QueryString';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { VideoPipe } from 'src/common/pipes/video.pipe';
-import { CreateVideoDto } from '../video/dto/create-video.dto';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { Request } from 'express';
-import { VideoService } from '../video/video.service';
-import { createReadStream } from 'fs';
+import { VideoService } from 'src/modules/videos/video/video.service';
+import { CreateVideoDto } from 'src/modules/videos/video/dto/create-video.dto';
 
 @Controller('teachers')
 export class TeacherController {
@@ -59,7 +58,7 @@ export class TeacherController {
   ) {
     [CreateVideoDto.src] = videoUrl;
 
-    return this.VideoService.uploadVideo(1, courseId, CreateVideoDto);
+    return this.VideoService.uploadVideo(req.userId, courseId, CreateVideoDto);
   }
   @Patch(':courseid/courses')
   @UseInterceptors(FileInterceptor('video'))
@@ -67,15 +66,17 @@ export class TeacherController {
   uploadVideodirectly(
     @Param('courseid') courseId: number,
     @Body() CreateVideoDto: CreateVideoDto,
+    @Req() req: Request,
     @UploadedFile(new VideoPipe()) videoUrl: string,
     @Body() body: any,
   ) {
     [CreateVideoDto.src] = videoUrl;
     CreateVideoDto.courseId = courseId;
+
     const { index } = body;
 
     return this.VideoService.uploadVideodirectly(
-      1,
+      req.userId,
       courseId,
       CreateVideoDto,
       +index,

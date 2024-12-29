@@ -31,6 +31,8 @@ permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   sessionId Message[] 
+  Carts Cart[]
+    @@index([id])
 }
 
 model Teacher {
@@ -47,6 +49,7 @@ permissions Permission[]
 course Course[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+    @@index([id])
 }
 
 
@@ -67,10 +70,11 @@ model Course {
 students     Student[]
   videos       Video[]
 orders Order[]
-
+ CartIItem CartItem[]
 teacher Teacher  @relation(fields: [teacherId], references: [id])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+    @@index([id])
 }
 
 model Video {
@@ -85,6 +89,7 @@ watched Boolean
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   videoWatched VideWtached[]
+  @@index([id])
 }
 
 model VideWtached{
@@ -114,7 +119,7 @@ CourseDuration Int
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
-
+  @@index([id])
   }
 
 model Permission {
@@ -126,6 +131,7 @@ model Permission {
 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+    @@index([id])
 }
 
 
@@ -144,6 +150,7 @@ permissions Permission[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
  sessionId Message[]
+   @@index([id])
 }
 
 model Message {
@@ -158,7 +165,7 @@ model Message {
    admin Admin? @relation(fields: [adminId],references: [id])
    student Student? @relation(fields: [studentId],references: [id])
 
-
+  @@index([id])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -171,16 +178,36 @@ model Order {
   studentId    Int
   student      Student          @relation(fields: [studentId], references: [id])
   courses      Course[]
-
+  @@index([id])
+  CartId Int @unique 
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
+model Cart{
+ id           Int              @id @default(autoincrement())
+ studentId Int  
 
+ carttItems CartItem[]
+ orderId Int?
+  @@index([id])
+ Student Student  @relation(fields: [studentId], references: [id])
+}
+model CartItem {
+  id       Int    @id @default(autoincrement())
+  cartId   Int?
 
+  cousreId Int
+  course Course     @relation(fields: [cousreId], references: [id])
+ 
+  cart     Cart?   @relation(fields: [cartId], references: [id])
+ 
+  quantity Int
+  @@index([id])
+}
 
  enum Roles{
   STUDENT 
   TEACHER
   ADMIN
   SUPER_ADMIN
-}
+} 

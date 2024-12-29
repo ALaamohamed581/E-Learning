@@ -1,0 +1,19 @@
+-- !!database triggers are not supporte in prisma you gonna have to set it manuli in sql shell by making the followng :>
+
+CREATE OR REPLACE FUNCTION insert_video_watcher()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Insert distinct "studentId" values along with the new video's id and courseId into "VideWtached"
+    INSERT INTO "VideWtached" ("studentId", "VideoId",  "wtached","courseId")
+    SELECT DISTINCT "B", NEW."id", FALSE, NEW."courseId"
+    FROM "_CourseToStudent";
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER video_watcher_trigger
+AFTER INSERT ON "Video"
+FOR EACH ROW
+EXECUTE FUNCTION insert_video_watcher();

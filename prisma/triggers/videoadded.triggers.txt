@@ -1,0 +1,24 @@
+CREATE OR REPLACE FUNCTION insert_Course_watcher()
+RETURNS TRIGGER AS $$
+DECLARE
+    last_video_id INTEGER;
+BEGIN
+ 
+    SELECT id INTO last_video_id
+    FROM "Video"
+    ORDER BY id DESC
+    LIMIT 1;
+
+
+    INSERT INTO "VideWtached" ("studentId", "VideoId", "wtached", "courseId")
+    SELECT DISTINCT NEW."B", last_video_id, FALSE, NEW."A";
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER video_Added_trigger
+AFTER INSERT ON "_CourseToStudent"
+FOR EACH ROW
+EXECUTE FUNCTION insert_Course_watcher();

@@ -1,13 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../global/prisma.service';
-import { VideoStatus } from '../videos/videoStatus/videoStatus.service';
+import { PrismaService } from '../../global/prisma.service';
 
 @Injectable()
 export class StudenCourses {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly videoStatus: VideoStatus,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async addCourse(id: number, courseId: number) {
     const course = await this.prisma.course.findFirst({
@@ -24,11 +20,7 @@ export class StudenCourses {
         courses: { connect: { id: courseId } },
       },
     });
-    this.videoStatus.addVideos({
-      courseId: courseId,
-      userId: id,
-      videos: course.videos,
-    });
+
     return newCourse;
   }
 }

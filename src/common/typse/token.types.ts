@@ -1,5 +1,5 @@
 import { CreateStudentDto } from 'src/modules/student/dto/create-student.dto';
-import { CreateTeacherDto } from 'src/modules/teacher/dto/create-teacher.dto';
+import { CreateTeacherDto } from 'src/modules/teachers/teacher/dto/create-teacher.dto';
 
 export type TokenData = {
   token: string;
@@ -11,8 +11,11 @@ export type Token = {
   expiresIn: string;
 };
 
-export type Payload = CreateStudentDto | CreateTeacherDto;
 export type AuthData = {
   model: CreateStudentDto | CreateTeacherDto;
   entity: string;
+};
+export type Payload = {
+  existingUser: CreateStudentDto | CreateTeacherDto;
+  onlyAllowd: string[][];
 };
