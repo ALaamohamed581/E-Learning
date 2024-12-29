@@ -1,0 +1,32 @@
+CREATE OR REPLACE FUNCTION insert_Permission()
+RETURNS TRIGGER AS $$
+DECLARE
+    course_id INTEGER;
+    permission_id INTEGER;
+BEGIN
+    -- Retrieve the course_id from the NEW row
+    course_id := NEW."A";
+
+    -- Insert into the Permission table and retrieve the permission_id
+    INSERT INTO "Permission" ("allowed", "createdAt", "updatedAt")
+    VALUES (
+        ARRAY['access-course-' || course_id::TEXT], -- Generate dynamic value
+        CURRENT_TIMESTAMP,                          -- Use current timestamp
+        CURRENT_TIMESTAMP
+    )
+    RETURNING id INTO permission_id;
+
+    -- Insert into _PermissionToStudent table
+    INSERT INTO "_PermissionToStudent" ("A", "B")
+    VALUES (permission_id, NEW."B");
+
+    -- Return the NEW row
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create the trigger
+CREATE TRIGGER Course_student_Permission
+AFTER INSERT ON "_CourseToStudent"
+FOR EACH ROW
+EXECUTE FUNCTION insert_Permission();
