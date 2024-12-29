@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { QueryString } from 'src/common/typse/QueryString';
-import { PrismaService } from 'src/modules/global/prisma.service';
+import { PrismaService } from '../../global/prisma.service';
 
 @Injectable()
 export class TeacherService {

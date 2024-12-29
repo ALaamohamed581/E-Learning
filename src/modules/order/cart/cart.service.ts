@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { PrismaService } from 'src/modules/global/prisma.service';
+import { PrismaService } from '../../global/prisma.service';
 
 @Injectable()
 export class CartService {

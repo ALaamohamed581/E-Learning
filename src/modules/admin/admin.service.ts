@@ -15,12 +15,16 @@ export class AdminService {
   findOne(id: number) {
     return this.prisma.admin.findUnique({
       where: { id },
+      omit: { password: true },
       include: { sessionId: true },
     });
   }
 
-  update(id: number) {
-    return `This action updates a #${id} admin`;
+  async update(id: number, updateAdeminDto) {
+    return await this.prisma.admin.update({
+      where: { id: id },
+      data: updateAdeminDto,
+    });
   }
 
   remove(id: number) {

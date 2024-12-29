@@ -12,9 +12,9 @@ import {
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
-import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
-import { QueryString } from 'src/common/typse/QueryString';
+import { AuthGuard } from '../../common/gurds/authguard/authGuard.guard';
+import { PaginationPipe } from '../../common/pipes/pagination.pipe';
+import { QueryString } from '../../common/typse/QueryString';
 
 @Controller('admin/permissions')
 export class PermissionsController {
