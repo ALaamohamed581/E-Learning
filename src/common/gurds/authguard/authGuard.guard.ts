@@ -5,8 +5,8 @@ import {
   mixin,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JWTAuthService } from 'src/modules/utlis/JWTAuthServicer.service';
-import { Payload } from 'src/common/typse/token.types';
+import { JWTAuthService } from '../../../modules/utlis/JWTAuthServicer.service';
+import { Payload } from '../../typse/token.types';
 
 declare module 'express' {
   interface Request {

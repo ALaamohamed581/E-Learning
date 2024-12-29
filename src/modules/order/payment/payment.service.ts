@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import Stripe from 'stripe';
 import * as paypal from '@paypal/checkout-server-sdk';
-import { PrismaService } from 'src/modules/global/prisma.service';
+import { PrismaService } from '../../global/prisma.service';
 import { StudenCourses } from './StudentCourses.service';
 import { PermissionsService } from '../../permissions/permissions.service';
 

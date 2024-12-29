@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVideoDto } from './dto/create-video.dto';
-import { PrismaService } from 'src/modules/global/prisma.service';
+import { PrismaService } from '../../global/prisma.service';
 
 @Injectable()
 export class VideoService {

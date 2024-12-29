@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Token, TokenData } from 'src/common/typse/token.types';
+import { Token, TokenData } from '../../common/typse/token.types';
 
 @Injectable()
 export class JWTAuthService {
