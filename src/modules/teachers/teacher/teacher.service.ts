@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
+import { Injectable } from '@nestjs/common';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { QueryString } from 'src/common/typse/QueryString';
 import { PrismaService } from 'src/modules/global/prisma.service';

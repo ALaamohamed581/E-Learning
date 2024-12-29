@@ -21,7 +21,7 @@ export class ChatGateway implements OnModuleInit, OnModuleDestroy {
   server: Server;
   userId: string;
   role: string;
-  private userSockets = new Map<string, string>(); // Key: userId, Value: socketId
+  private userSockets = new Map<string, string>();
 
   onModuleInit() {
     this.server.use(async (socket: Socket, next) => {

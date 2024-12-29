@@ -4,7 +4,7 @@ import { AdminController } from './admin.controller';
 import { PermissionsModule } from '../permissions/permissions.module';
 
 @Module({
-  imports:[ PermissionsModule],
+  imports: [PermissionsModule],
   controllers: [AdminController],
   providers: [AdminService],
 })

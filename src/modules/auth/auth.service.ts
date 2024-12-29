@@ -31,11 +31,11 @@ export class AuthService {
     return newUser;
   }
   async signIn(email: string, password: string, entity: 'student' | 'teacher') {
-    let existingUser = await (this.prisma[entity] as any).findFirst({
+    const existingUser = await (this.prisma[entity] as any).findFirst({
       where: { email },
     });
 
-    let allowedPermissions = await this.prisma.permission.findMany({
+    const allowedPermissions = await this.prisma.permission.findMany({
       where: {
         [`${entity}s`]: {
           some: { id: existingUser.id }, // This assumes a relation between `permission` and another model
@@ -44,7 +44,7 @@ export class AuthService {
       select: { allowed: true },
     });
 
-    let onlyAllowd = allowedPermissions.map((perm) => perm.allowed);
+    const onlyAllowd = allowedPermissions.map((perm) => perm.allowed);
 
     if (!existingUser)
       throw new BadRequestException('This email dosent exsits');

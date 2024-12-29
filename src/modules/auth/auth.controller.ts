@@ -10,13 +10,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import axios from 'axios';
 import { CreateStudentDto } from '../student/dto/create-student.dto';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { SignIn } from 'src/common/Interceptores/signinInterceptor/signin.intecptor';
 import { RefrshGuradGuard } from 'src/common/gurds/refreshGuard.guard/refrshGurad.guard';
-import { ApiCookieAuth } from '@nestjs/swagger';
 import { AccessRokenInterceptor } from 'src/common/Interceptores/access-roken/access-roken.interceptor';
 import { EntityInterCetor } from 'src/common/Interceptores/validation/valdiation.interceptor';
 import { CreateTeacherDto } from '../teachers/teacher/dto/create-teacher.dto';
@@ -28,7 +26,6 @@ export class AuthController {
 
   @Get('/google')
   Goggle(@Req() req: Request, @Res() res: Response) {
-    const CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET;
     const REDIRECT_URI =
       'http://localhost:8000/api/v1/students/auth/google/callback';
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.OAUTH_CLIENT_ID}&redirect_uri=${REDIRECT_URI}k&response_type=code&scope=profile email`;
@@ -36,31 +33,21 @@ export class AuthController {
   }
   @Get('/google/callback')
   async callback(@Req() req: Request, @Res() res: Response) {
-    const code = req.query.code as string;
-    const CLIENT_ID = process.env.OAUTH_CLIENT_ID;
-    const CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET;
-    const REDIRECT_URI =
-      'http://localhost:8000/api/v1/students/auth/google/callback';
+    // const code = req.query.code as string;
+    // const CLIENT_ID = process.env.OAUTH_CLIENT_ID;
+    // const CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET;
+    // const REDIRECT_URI =
+    //   'http://localhost:8000/api/v1/students/auth/google/callback';
 
     try {
       // Exchange authorization code for access token
-      const { data } = await axios.post('https://oauth2.googleapis.com/token', {
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code,
-        redirect_uri: REDIRECT_URI,
-        grant_type: 'authorization_code',
-      });
-
-      const { access_token } = data;
-
-      // Use access_token to fetch user profile
-      const { data: profile } = await axios.get(
-        'https://www.googleapis.com/oauth2/v1/userinfo',
-        {
-          headers: { Authorization: `Bearer ${access_token}` },
-        },
-      );
+      // const { data } = await axios.post('https://oauth2.googleapis.com/token', {
+      //   client_id: CLIENT_ID,
+      //   client_secret: CLIENT_SECRET,
+      //   code,
+      //   redirect_uri: REDIRECT_URI,
+      //   grant_type: 'authorization_code',
+      // });
 
       // Code to handle user authentication and retrieval using the profile data
 
@@ -80,7 +67,7 @@ export class AuthController {
     return this.authService.signUp({ entity, model });
   }
 
-  @UseInterceptors(SignIn({ role: 'student' }))
+  @UseInterceptors(SignIn())
   @Post('/signin')
   async signIn(
     @Param('entity') entity: 'student' | 'teacher',
@@ -117,7 +104,7 @@ export class AuthController {
       .json({ message: 'Sign-out successful' });
   }
 
-  @UseGuards(RefrshGuradGuard('user'))
+  @UseGuards(RefrshGuradGuard())
   @UseInterceptors(AccessRokenInterceptor)
   @Get('acces-token')
   async getAccessToken(

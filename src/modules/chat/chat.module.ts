@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ChatGateway } from '../../gateways/chat.gateway';
 import { SocketAuth } from 'src/common/middlewares/chatAuthtication';
 

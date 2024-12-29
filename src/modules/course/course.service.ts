@@ -50,7 +50,7 @@ export class CourseService {
     });
   }
 
-  async update(id: number, updateStudentDto: UpdateCourseDto) {
+  async update(id: number) {
     const student = await this.prisma.course.findFirst({ where: { id } });
     if (!student) throw new BadRequestException('This student dosent exsits');
     return this.prisma.student.update({

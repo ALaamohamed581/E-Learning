@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVideoDto } from './dto/create-video.dto';
-import { UpdateVideoDto } from './dto/update-video.dto';
 import { PrismaService } from 'src/modules/global/prisma.service';
 
 @Injectable()
@@ -51,7 +50,7 @@ export class VideoService {
       });
 
       // Fetch all students enrolled in the course
-      const { students } = await this.prisma.course.findFirst({
+      await this.prisma.course.findFirst({
         where: { id: courseId },
         select: { students: true },
       });
@@ -83,7 +82,7 @@ export class VideoService {
     return `This action returns a #${id} video`;
   }
 
-  update(id: number, updateVideoDto: UpdateVideoDto) {
+  update(id: number) {
     return `This action updates a #${id} video`;
   }
 

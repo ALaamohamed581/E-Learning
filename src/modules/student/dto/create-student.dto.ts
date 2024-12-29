@@ -1,5 +1,4 @@
 import { IsEmail, IsString, IsOptional } from 'class-validator';
-import { Exclude } from 'class-transformer';
 
 export class CreateStudentDto {
   @IsString()

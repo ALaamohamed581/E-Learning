@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-export const RefrshGuradGuard = (role: string): any => {
+export const RefrshGuradGuard = (): any => {
   @Injectable()
   class RefrshGuradGuardMixin implements CanActivate {
     constructor(private readonly jwtService: JwtService) {}

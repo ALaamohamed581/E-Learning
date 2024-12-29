@@ -11,7 +11,6 @@ import { ConfigService } from '@nestjs/config';
 
 import * as cookieParser from 'cookie-parser';
 import * as compression from 'compression';
-import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser(process.env.COOKIE_SECRET));

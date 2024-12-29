@@ -1,21 +1,13 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
   Patch,
   Param,
   Delete,
-  UseInterceptors,
-  UploadedFile,
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { VideoService } from './video.service';
-import { CreateVideoDto } from './dto/create-video.dto';
-import { UpdateVideoDto } from './dto/update-video.dto';
-import { VideoPipe } from 'src/common/pipes/video.pipe';
 import { AuthGuard } from 'src/common/gurds/authguard/authGuard.guard';
 import { Request } from 'express';
 
@@ -34,8 +26,8 @@ export class VideoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVideoDto: UpdateVideoDto) {
-    return this.videoService.update(+id, updateVideoDto);
+  update(@Param('id') id: string) {
+    return this.videoService.update(+id);
   }
   @UseGuards(AuthGuard('teacher'))
   @Delete(':id/courses/:course-id')

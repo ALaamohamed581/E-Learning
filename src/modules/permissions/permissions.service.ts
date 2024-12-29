@@ -7,7 +7,6 @@ import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PrismaService } from '../global/prisma.service';
 import { QueryString } from 'src/common/typse/QueryString';
-import { connect } from 'http2';
 
 @Injectable()
 export class PermissionsService {

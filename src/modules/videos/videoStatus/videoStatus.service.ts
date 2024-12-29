@@ -5,7 +5,7 @@ export class VideoStatus {
   constructor(private readonly prisma: PrismaService) {}
 
   async watchVideo({ courseId, studentId, VideoId, data }) {
-    let foundStudent = await this.prisma.student.findFirst({
+    const foundStudent = await this.prisma.student.findFirst({
       where: {
         id: studentId,
         courses: { some: { id: courseId } },

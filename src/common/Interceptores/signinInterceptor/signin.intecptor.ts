@@ -8,7 +8,7 @@ import {
 import { Observable, tap } from 'rxjs';
 import { JWTAuthService } from 'src/modules/utlis/JWTAuthServicer.service';
 
-export const SignIn = ({ role, authSecret = '', refSecret = '' }): any => {
+export const SignIn = (): any => {
   @Injectable()
   class SignInMixin implements NestInterceptor {
     constructor(private readonly jwt: JWTAuthService) {}
