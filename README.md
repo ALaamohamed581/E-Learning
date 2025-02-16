@@ -52,27 +52,27 @@ Make sure you have the following installed:
    Create a `.env` file in the root directory and configure the following variables:
 
    ```env
-   DATABASE_URL=postgres://username:password@localhost:5432/elearning
-   OAUTH_CLIENT_ID=your-oauth-client-id
-   OAUTH_CLIENT_SECRET=your-oauth-client-secret
-   CSRF_SECRET=your-csrf-secret
-   TEACHER_REFRESH_TOKEN_SECRET=your-teacher-refresh-token-secret
-   TEACHER_AUTH_TOKEN_SECRET=your-teacher-auth-token-secret
-   ADMIN_AUTH_TOKEN_SECRET=your-ADMIN-auth-token-secret
-   ADMIN_REFRESH_TOKEN_SECRET=your-ADMIN-refresh-token-secret
-   COOKIE_SECRET=your-cookie-secret
-   STUDENT_REFRESH_TOKEN_SECRET=your-student-refresh-token-secret
-   STUDENT_AUTH_TOKEN_SECRET=your-student-auth-token-secret
-   EMAIL_USERNAME=your-email-username
-   EMAIL_PASSWORD=your-email-password
-   EMAIL_HOST=smtp.your-email-host.com
-   EMAIL_PORT=587
-   CLOUDINARY_CLOUD_KEY=your-cloudinary-cloud-key
-   CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
-   CLOUDINARY_CLOUD_SECRET=your-cloudinary-cloud-secret
-   STRIPE_API_KEY=your-stripe-api-key
-   PAYPAL_CLIENT_ID=your-paypal-client-id
-   PAYPAL_CLIENT_SECRET=your-paypal-client-secret
+   DATABASE_URL= 
+   OAUTH_CLIENT_ID= 
+   OAUTH_CLIENT_SECRET= 
+   CSRF_SECRET= 
+   TEACHER_REFRESH_TOKEN_SECRET= 
+   TEACHER_AUTH_TOKEN_SECRET= 
+   ADMIN_AUTH_TOKEN_SECRET= 
+   ADMIN_REFRESH_TOKEN_SECRET= 
+   COOKIE_SECRET= 
+   STUDENT_REFRESH_TOKEN_SECRET= 
+   STUDENT_AUTH_TOKEN_SECRET= 
+   EMAIL_USERNAME= 
+   EMAIL_PASSWORD= 
+   EMAIL_HOST= 
+   EMAIL_PORT= 
+   CLOUDINARY_CLOUD_KEY= 
+   CLOUDINARY_CLOUD_NAME= 
+   CLOUDINARY_CLOUD_SECRET= 
+   STRIPE_API_KEY= 
+   PAYPAL_CLIENT_ID=y 
+   PAYPAL_CLIENT_SECRET= 
    PORT=8000
    ```
 
