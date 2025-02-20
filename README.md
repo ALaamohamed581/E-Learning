@@ -9,8 +9,7 @@ An online platform to facilitate learning through courses and tutorials for stud
 - **Role-Based Access**: Different permissions and functionalities based on user role (student/teacher).
 - **Course Management**: Teachers can create and manage courses, while students can view and enroll in them.
 - **Interactive Learning**: Students can track their progress through the course materials.
-- **Payment Integration**: Stripe and PayPal integration for handling course payments.
-
+ 
 ## Tech Stack
 
 - **Backend**: NestJS
